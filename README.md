@@ -34,7 +34,6 @@ guile-r7rs is the collection of libraries part of
 - `(scheme charset)` aka. SRFI 14
 - `(scheme comparator)` aka. SRFI 128
 - `(scheme ephemeron)`) aka. SRFI 124
-- `(scheme generator)` aka. SRFI 121
 - `(scheme hash-table)` aka. SRFI 125
 - `(scheme ideque)`) aka. SRFI 134
 - `(scheme ilist)` aka. SRFI 116
