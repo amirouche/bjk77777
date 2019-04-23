@@ -1,54 +1,70 @@
 <h1 id="guile-r7rs">guile-r7rs</h1>
+<p><a href="https://gnu.org/s/guix/"><img src="https://www.gnu.org/software/guile/static/base/img/branding.png" alt="gnu guile logo" /></a></p>
+<p><a href="https://builds.sr.ht/~amz3/guile-r7rs?"><img src="https://builds.sr.ht/~amz3/guile-r7rs.svg" alt="builds.sr.ht status" /></a></p>
 <h2 id="introduction">Introduction</h2>
 <p>guile-r7rs is the collection of libraries part of <a href="https://r7rs.org">R7RS</a> bundled for GNU Guile 2.2 or later.</p>
 <h3 id="table-of-content">Table of Content</h3>
 <h4 id="r7rs-small">R7RS small</h4>
 <ul>
-<li><code>(scheme base)</code> TODO: TEST + DOC</li>
-<li><code>(scheme case-lambda)</code> TODO: CODE + TEST + DOC</li>
-<li><code>(scheme char)</code> TODO: CODE + TEST + DOC</li>
-<li><code>(scheme complex)</code> TODO: CODE + TEST + DOC</li>
-<li><code>(scheme cxr)</code> TODO: CODE + TEST + DOC</li>
-<li><code>(scheme eval)</code> TODO: CODE + TEST + DOC</li>
-<li><code>(scheme file)</code> TODO: CODE + TEST + DOC</li>
-<li><code>(scheme inexact)</code> TODO: CODE + TEST + DOC</li>
-<li><code>(scheme lazy)</code> TODO: CODE + TEST + DOC</li>
-<li><code>(scheme load)</code> TODO: CODE + TEST + DOC</li>
-<li><code>(scheme process-context)</code> TODO: CODE + TEST + DOC</li>
-<li><code>(scheme r5rs)</code> TODO: CODE + TEST + DOC</li>
-<li><code>(scheme read)</code> TODO: CODE + TEST + DOC</li>
-<li><code>(scheme repl)</code> TODO: CODE + TEST + DOC</li>
-<li><code>(scheme time)</code> TODO: CODE + TEST + DOC</li>
-<li><code>(scheme write)</code> TODO: CODE + TEST + DOC</li>
+<li><code>(scheme base)</code></li>
+<li><code>(scheme case-lambda)</code></li>
+<li><code>(scheme char)</code></li>
+<li><code>(scheme complex)</code></li>
+<li><code>(scheme cxr)</code></li>
+<li><code>(scheme eval)</code></li>
+<li><code>(scheme file)</code></li>
+<li><code>(scheme inexact)</code></li>
+<li><code>(scheme lazy)</code></li>
+<li><code>(scheme load)</code></li>
+<li><code>(scheme process-context)</code></li>
+<li><code>(scheme r5rs)</code></li>
+<li><code>(scheme read)</code></li>
+<li><code>(scheme repl)</code></li>
+<li><code>(scheme time)</code></li>
+<li><code>(scheme write)</code></li>
 </ul>
 <h4 id="r7rs-red-edition">R7RS Red Edition</h4>
 <ul>
-<li><code>(scheme box)</code> aka. SRFI 111, TODO: CODE + TEST + DOC</li>
-<li><code>(scheme charset)</code> aka. SRFI 14, TODO: CODE + TEST + DOC</li>
-<li><code>(scheme comparator)</code> aka. SRFI 128, TODO: CODE + TEST + DOC</li>
-<li><code>(scheme ephemeron)</code>) aka. SRFI 124, TODO: CODE + TEST + DOC</li>
-<li><code>(scheme generator)</code> aka. SRFI 121, TODO: CODE + TEST + DOC</li>
-<li><code>(scheme hash-table)</code> aka. SRFI 125, TODO: CODE + TEST + DOC</li>
-<li><code>(scheme ideque)</code>) aka. SRFI 134, TODO: CODE + TEST + DOC</li>
-<li><code>(scheme ilist)</code> aka. SRFI 116, TODO: CODE + TEST + DOC</li>
-<li><code>(scheme list)</code> aka. SRFI 1, TODO: CODE + TEST + DOC</li>
-<li><code>(scheme list-queue)</code> aka. SRFI 117, TODO: CODE + TEST + DOC</li>
-<li><code>(scheme lseq)</code> aka. SRFI 127, TODO: CODE + TEST + DOC</li>
-<li><code>(scheme rlist)</code> aka SRFI 101, TODO: CODE + TEST + DOC</li>
-<li><code>(scheme set)</code> aka. SRFI 113, TODO: CODE + TEST + DOC</li>
-<li><code>(scheme sort)</code> aka. SRFI 132, TODO: CODE + TEST + DOC</li>
-<li><code>(scheme stream)</code> aka. SRFI 41, TODO: CODE + TEST + DOC</li>
-<li><code>(scheme text)</code> aka. SRFI 135, TODO: CODE + TEST + DOC</li>
-<li><code>(scheme vector)</code> aka. SRFI 133, TODO: CODE + TEST + DOC</li>
+<li><code>(scheme box)</code> aka. SRFI 111</li>
+<li><code>(scheme charset)</code> aka. SRFI 14</li>
+<li><code>(scheme comparator)</code> aka. SRFI 128</li>
+<li><code>(scheme ephemeron)</code>) aka. SRFI 124</li>
+<li><code>(scheme generator)</code> aka. SRFI 121</li>
+<li><code>(scheme hash-table)</code> aka. SRFI 125</li>
+<li><code>(scheme ideque)</code>) aka. SRFI 134</li>
+<li><code>(scheme ilist)</code> aka. SRFI 116</li>
+<li><code>(scheme list)</code> aka. SRFI 1</li>
+<li><code>(scheme list-queue)</code> aka. SRFI 117</li>
+<li><code>(scheme lseq)</code> aka. SRFI 127</li>
+<li><code>(scheme rlist)</code> aka SRFI 101</li>
+<li><code>(scheme set)</code> aka. SRFI 113</li>
+<li><code>(scheme sort)</code> aka. SRFI 132</li>
+<li><code>(scheme stream)</code> aka. SRFI 41</li>
+<li><code>(scheme text)</code> aka. SRFI 135</li>
+<li><code>(scheme vector)</code> aka. SRFI 133</li>
+</ul>
+<h4 id="r7rs-tangerine-edition">R7RS Tangerine Edition</h4>
+<ul>
+<li><code>(scheme mapping)</code> aka. SRFI 146</li>
+<li><code>(scheme mapping hash)</code> aka. SRFI 146</li>
+<li><code>(scheme regex)</code> aka. SRFI 115</li>
+<li><code>(scheme generator)</code> aka. SRFI 158</li>
+<li><code>(scheme division)</code> aka. SRFI 141</li>
+<li><code>(scheme bitwise)</code> aka. SRFI 151</li>
+<li><code>(scheme fixnum)</code> aka. SRFI 143</li>
+<li><code>(scheme flonum)</code> aka. SRFI 144</li>
+<li><code>(scheme bytevector)</code> aka. <code>(rnrs bytevectors)</code> aka. SRFI 4</li>
+<li><code>(scheme vector @)</code> aka. SRFI 160 where @ is any of base, u8, s8, u16, s16, u32, s32, u64, s64, f32, f64, c64, c128.</li>
+<li><code>(scheme show)</code> aka. SRFI 159</li>
 </ul>
 <h2 id="scheme-base"><code>(scheme base)</code></h2>
-<h1 id="section"><code>_</code></h1>
-<p>TODO (missing r7rs?)</p>
-<h1 id="section-1"><code>...</code></h1>
+<h3 id="section"><code>_</code></h3>
+<p>TODO (missing in r7rs?)</p>
+<h3 id="section-1"><code>...</code></h3>
 <p>TODO</p>
-<h1 id="section-2"><code>=&gt;</code></h1>
+<h3 id="section-2"><code>=&gt;</code></h3>
 <p>TODO</p>
-<h1 id="else"><code>else</code></h1>
+<h3 id="else"><code>else</code></h3>
 <p>TODO</p>
 <h3 id="section-3"><code>*</code></h3>
 <p>TODO</p>

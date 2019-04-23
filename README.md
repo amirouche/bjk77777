@@ -1,5 +1,7 @@
 # guile-r7rs
 
+[![builds.sr.ht status](https://builds.sr.ht/~amz3/guile-r7rs.svg)](https://builds.sr.ht/~amz3/guile-r7rs?)
+
 ## Introduction
 
 guile-r7rs is the collection of libraries part of
