@@ -6,7 +6,8 @@ TODO (missing in r7rs?)
 
 ### `...`
 
-TODO
+It is called ellipsis. It used in macros, `match` that is not part of
+R7RS. It signify that a pattern must be repeated.
 
 ### `=>`
 
@@ -14,422 +15,432 @@ TODO
 
 ### `else`
 
-TODO
+Used in `cond` form as in the last clause as a fallback.
 
-### `*`
+### `(* number ...)`
 
-TODO
+Multiplication procedure.
 
 ### `(+ number ...)`
 
 Addition procedure.
 
-### `-`
+### `(- number ...)`
+
+Substraction procedure.
+
+### `(/ number number ...)`
+
+Division procedure. Raise `'numerical-overflow` condition in case
+where denominator is zero.
+
+### `(< number number ...)`
+
+Less than procedure. Return a boolean.
+
+### `(<= number number ...)`
+
+Less than or equal procedure. Return a boolean.
+
+### `(= number number ...)`
+
+Return `#t` if the numbers passed as parameters are equal. And `#f`
+otherwise.
+
+### `(> number number ...)`
+
+Greater than procedure. Return a boolean.
+
+### `(>= number number ...)`
+
+Greater than or equal. Return a boolean.
+
+### `(abs number)`
+
+Return the absolute value of `NUMBER`.
+
+### `(and obj ...)`
+
+Return `#f` if one the scheme object is `#f` otherwise it return the
+last object.
+
+### `(append lst ...)`
+
+Return the list made of the list passed as parameters in the same
+order.
+
+### `(apply proc obj ... lst)`
 
 TODO
 
-### `/`
-TODO
+### `(assoc obj alist)`
 
-### `<`
-TODO
+Return the first pair which `car` is equal to `OBJ` according to the
+predicate `equal?`. Or it returns `#f`.
 
+### `(assq obj alist)`
 
-### `<=`
-TODO
+Return the first pair which `car` is equal to `OBJ` according to the
+predicate `eq?`. Or it returns `#f`.
 
+### `(assv obj alist)`
 
-### `=`
-TODO
-
-
-### `>`
-TODO
-
-
-### `>=`
-TODO
-
-
-### `abs`
-TODO
-
-
-### `and`
-TODO
-
-
-### `append`
-TODO
-
-
-### `apply`
-TODO
-
-
-### `assoc`
-TODO
-
-
-### `assq`
-TODO
-
-
-### `assv`
-TODO
-
+Return the first pair which `car` is equal to `OBJ` according to the
+predicate `eqv?`. Or it returns `#f`.
 
 ### `begin`
-TODO
 
+TODO
 
 ### `binary-port?`
+
 TODO
 
+### `(boolean=? obj ...)`
 
-### `boolean=?`
-TODO
+Return `#t` if the scheme objects passed as arguments are the same
+boolean. Otherwise it return `#f`.
 
+### `(boolean? obj)`
 
-### `boolean?`
-TODO
-
+Return `#t` if `OBJ` is a boolean. Otherwise `#f`.
 
 ### `bytevector`
+
 TODO
 
+### `(bytevector-append bytevector ...)`
 
-### `bytevector-append`
+Return a bytevector where all bytes from the bytevectors passed as
+parameters are packed in the same order.
+
+### `(bytevector-copy bytevector)`
+
 TODO
-
-
-### `bytevector-copy`
-TODO
-
 
 ### `bytevector-copy!`
-TODO
 
+TODO
 
 ### `bytevector-length`
-TODO
 
+TODO
 
 ### `bytevector-u8-ref`
-TODO
 
+TODO
 
 ### `bytevector-u8-set!`
-TODO
 
+TODO
 
 ### `bytevector?`
-TODO
 
+TODO
 
 ### `caar`
-TODO
 
+TODO
 
 ### `cadr`
-TODO
 
+TODO
 
 ### `call-with-current-continuation`
-TODO
 
+TODO
 
 ### `call-with-port`
-TODO
 
+TODO
 
 ### `call-with-values`
-TODO
 
+TODO
 
 ### `call/cc`
-TODO
 
+Shortcut for `call-with-continuation`.
 
 ### `car`
-TODO
 
+TODO
 
 ### `case`
-TODO
 
+TODO
 
 ### `cdar`
-TODO
 
+TODO
 
 ### `cddr`
-TODO
 
+TODO
 
 ### `cdr`
-TODO
 
+TODO
 
 ### `ceiling`
-TODO
 
+TODO
 
 ### `char->integer`
-TODO
 
+TODO
 
 ### `char-ready?`
-TODO
 
+TODO
 
 ### `char<=?`
-TODO
 
+TODO
 
 ### `char<?`
-TODO
 
+TODO
 
 ### `char=?`
-TODO
 
+TODO
 
 ### `char>=?`
-TODO
 
+TODO
 
 ### `char>?`
-TODO
 
+TODO
 
 ### `char?`
-TODO
 
+TODO
 
 ### `close-input-port`
-TODO
 
+TODO
 
 ### `close-output-port`
-TODO
 
+TODO
 
 ### `close-port`
-TODO
 
+TODO
 
 ### `complex?`
-TODO
 
+TODO
 
 ### `cond`
-TODO
 
+TODO
 
 ### `cond-expand`
-TODO
 
+TODO
 
 ### `cons`
-TODO
 
+TODO
 
 ### `current-error-port`
-TODO
 
+TODO
 
 ### `current-input-port`
-TODO
 
+TODO
 
 ### `current-output-port`
-TODO
 
+TODO
 
 ### `define`
-TODO
 
+TODO
 
 ### `define-record-type`
-TODO
 
+TODO
 
 ### `define-syntax`
-TODO
 
+TODO
 
 ### `define-values`
-TODO
 
+TODO
 
 ### `denominator`
-TODO
 
+TODO
 
 ### `do`
-TODO
 
+TODO
 
 ### `dynamic-wind`
-TODO
 
+TODO
 
 ### `eof-object`
-TODO
 
+TODO
 
 ### `eof-object?`
-TODO
 
+TODO
 
 ### `eq?`
-TODO
 
+TODO
 
 ### `equal?`
-TODO
 
+TODO
 
 ### `eqv?`
-TODO
 
+TODO
 
 ### `(error [who] message . irritants)`
 
 Raise an error.
 
 ### `error-object-irritants`
-TODO
 
+TODO
 
 ### `error-object-message`
-TODO
 
+TODO
 
 ### `error-object?`
-TODO
 
+TODO
 
 ### `even?`
-TODO
 
+TODO
 
 ### `exact`
-TODO
 
+TODO
 
 ### `exact-integer-sqrt`
-TODO
 
+TODO
 
 ### `exact-integer?`
-TODO
 
+TODO
 
 ### `exact?`
-TODO
 
+TODO
 
 ### `expt`
-TODO
 
+TODO
 
 ### `features`
-TODO
 
+TODO
 
 ### `file-error?`
-TODO
 
+TODO
 
 ### `floor`
-TODO
 
+TODO
 
 ### `floor-quotient`
-TODO
 
+TODO
 
 ### `floor-remainder`
-TODO
 
+TODO
 
 ### `floor/`
-TODO
 
+TODO
 
 ### `flush-output-port`
-TODO
 
+TODO
 
 ### `for-each`
-TODO
 
+TODO
 
 ### `gcd`
-TODO
 
+TODO
 
 ### `get-output-bytevector`
-TODO
 
+TODO
 
 ### `get-output-string`
-TODO
 
+TODO
 
 ### `guard`
-TODO
 
+TODO
 
 ### `if`
-TODO
 
+TODO
 
 ### `include`
-TODO
 
+TODO
 
 ### `include-ci`
-TODO
 
+TODO
 
 ### `inexact`
-TODO
 
+TODO
 
 ### `inexact?`
-TODO
 
+TODO
 
 ### `input-port-open?`
-TODO
 
+TODO
 
 ### `input-port?`
-TODO
 
+TODO
 
 ### `integer->char`
-TODO
 
+TODO
 
 ### `integer?`
-TODO
 
+TODO
 
 ### `lambda`
-TODO
 
+TODO
 
 ### `lcm`
-TODO
 
+TODO
 
 ### `length`
-TODO
 
+TODO
 
 ### `let`
 TODO
