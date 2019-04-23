@@ -17,7 +17,10 @@ guile-r7rs is the collection of libraries part of
 
 3. Add documentation, tests or an implementation based on existing
    Guile modules or sample implementation that can be found at
-   [http://srfi.schemers.org/](http://srfi.schemers.org/).
+   [http://srfi.schemers.org/](http://srfi.schemers.org/). Also, R7RS
+   small is implemented in terms of R6RS in
+   [akku-r7rs](https://gitlab.com/akkuscm/akku-r7rs/) in a compatible
+   license.
 
 4. When your contribution is ready, ask amirouche at hyper dev to
    become a contributor to be able to push.
