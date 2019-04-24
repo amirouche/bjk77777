@@ -15,7 +15,7 @@ is based on the following libraries:
 - `(scheme eval)`
 - `(scheme repl)`
 - `(scheme load)`
-- `(scheme lazy)`
+- `(scheme lazy)`t
 
 It exports the following forms:
 

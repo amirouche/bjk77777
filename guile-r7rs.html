@@ -691,10 +691,10 @@
 <li><code>cdddr</code></li>
 </ul>
 <h2 id="scheme-eval"><code>(scheme eval)</code></h2>
-<h3 id="environment"><code>(environment)</code></h3>
-<p>TODO</p>
-<h3 id="eval"><code>(eval)</code></h3>
-<p>TODO</p>
+<h3 id="environment-list1-..."><code>(environment list1 ...)</code></h3>
+<p>This procedure returns a specifier for the environment that results by starting with an empty environment and then importing each list, considered as an import set, into it. (See section 5.6 for a description of import sets.) The bindings of the environment represented by the specifier are immutable, as is the environment itself.</p>
+<h3 id="eval-expr-or-def-environment-specifier"><code>(eval expr-or-def environment-specifier)</code></h3>
+<p>If expr-or-def is an expression, it is evaluated in the specified environment and its values are returned. If it is a definition, the specified identifier(s) are defined in the specified environment, provided the environment is not immutable. Implementations may extend eval to allow other objects.</p>
 <h2 id="scheme-file"><code>(scheme file)</code></h2>
 <h3 id="call-with-input-file"><code>(call-with-input-file)</code></h3>
 <p>TODO</p>
@@ -753,39 +753,475 @@
 <h3 id="make-promise-exp"><code>(make-promise exp)</code></h3>
 <p>TODO</p>
 <h2 id="scheme-load"><code>(scheme load)</code></h2>
-<h3 id="load-...-environment"><code>(load ... [environment])</code></h3>
-<p>TODO</p>
+<h3 id="load-filename-environment"><code>(load filename [environment])</code></h3>
+<p>It is an error if filename is not a string.</p>
+<p>An implementation-dependent operation is used to transform filename into the name of an existing file containing Scheme source code. The load procedure reads expressions and definitions from the file and evaluates them sequentially in the environment specified by environment-specifier. If environment-specifier is omitted, (interaction-environment) is assumed.</p>
+<p>It is unspecified whether the results of the expressions are printed. The load procedure does not affect the values returned by current-input-port and current-output-port. It returns an unspecified value.</p>
 <h2 id="scheme-process-context"><code>(scheme process-context)</code></h2>
 <h3 id="command-line"><code>(command-line)</code></h3>
-<p>TODO</p>
-<h3 id="emergency-exit"><code>(emergency-exit)</code></h3>
-<p>TODO</p>
-<h3 id="exit"><code>(exit)</code></h3>
-<p>TODO</p>
-<h3 id="get-environment-variable"><code>(get-environment-variable)</code></h3>
-<p>TODO</p>
+<p>Returns the command line passed to the process as a list of strings. The first string corresponds to the command name, and is implementation-dependent. It is an error to mutate any of these strings.</p>
+<h3 id="emergency-exit-obj"><code>(emergency-exit [obj])</code></h3>
+<p>Terminates the program without running any outstanding dynamic-wind after procedures and communicates an exit value to the operating system in the same manner as exit.</p>
+<h3 id="exit-obj"><code>(exit [obj])</code></h3>
+<p>Runs all outstanding dynamic-wind after procedures, terminates the running program, and communicates an exit value to the operating system. If no argument is supplied, or if obj is #t, the exit procedure should communicate to the operating system that the program exited normally. If obj is #f, the exit procedure should communicate to the operating system that the program exited abnormally. Otherwise, exit should translate obj into an appropriate exit value for the operating system, if possible.</p>
+<h3 id="get-environment-variable-name"><code>(get-environment-variable name)</code></h3>
+<p>Many operating systems provide each running process with an environment consisting of environment variables. Both the name and value of an environment variable are strings. The procedure get-environment-variable returns the value of the environment variable name, or #f if the named environment variable is not found. It may use locale information to encode the name and decode the value of the environment variable. It is an error if get-environment-variable can’t decode the value. It is also an error to mutate the resulting string.</p>
 <h3 id="get-environment-variables"><code>(get-environment-variables)</code></h3>
-<p>TODO</p>
+<p>Returns the names and values of all the environment variables as an alist, where the car of each entry is the name of an environment variable and the cdr is its value, both as strings. The order of the list is unspecified. It is an error to mutate any of these strings or the alist itself.</p>
 <h2 id="scheme-r5rs"><code>(scheme r5rs)</code></h2>
-<p>TODO</p>
-<h2 id="scheme-r5rs-1"><code>(scheme r5rs)</code></h2>
-<p>TODO</p>
+<p>Thie library export <a href="https://bitbucket.org/cowan/r7rs/src/draft-10/rnrs/">R5RS</a> forms. It is based on the following libraries:</p>
+<ul>
+<li><code>(scheme base)</code></li>
+<li><code>(scheme inexact)</code></li>
+<li><code>(scheme complex)</code></li>
+<li><code>(scheme cxr)</code></li>
+<li><code>(scheme file)</code></li>
+<li><code>(scheme char)</code></li>
+<li><code>(scheme read)</code></li>
+<li><code>(scheme write)</code></li>
+<li><code>(scheme eval)</code></li>
+<li><code>(scheme repl)</code></li>
+<li><code>(scheme load)</code></li>
+<li><code>(scheme lazy)</code>t</li>
+</ul>
+<p>It exports the following forms:</p>
+<ul>
+<li><code>*</code></li>
+<li><code>+</code></li>
+<li><code>-</code></li>
+<li><code>/</code></li>
+<li><code>&lt;</code></li>
+<li><code>&lt;=</code></li>
+<li><code>=</code></li>
+<li><code>&gt;</code></li>
+<li><code>&gt;=</code></li>
+<li><code>abs</code></li>
+<li><code>acos</code></li>
+<li><code>and</code></li>
+<li><code>angle</code></li>
+<li><code>append</code></li>
+<li><code>apply</code></li>
+<li><code>asin</code></li>
+<li><code>assoc</code></li>
+<li><code>assq</code></li>
+<li><code>assv</code></li>
+<li><code>atan</code></li>
+<li><code>begin</code></li>
+<li><code>boolean?</code></li>
+<li><code>caaaar</code></li>
+<li><code>caaadr</code></li>
+<li><code>caaar</code></li>
+<li><code>caadar</code></li>
+<li><code>caaddr</code></li>
+<li><code>caadr</code></li>
+<li><code>caar</code></li>
+<li><code>cadaar</code></li>
+<li><code>cadadr</code></li>
+<li><code>cadar</code></li>
+<li><code>caddar</code></li>
+<li><code>cadddr</code></li>
+<li><code>caddr</code></li>
+<li><code>cadr</code></li>
+<li><code>call-with-current-continuation</code></li>
+<li><code>call-with-input-file</code></li>
+<li><code>call-with-output-file</code></li>
+<li><code>call-with-values</code></li>
+<li><code>car</code></li>
+<li><code>case</code></li>
+<li><code>cdaaar</code></li>
+<li><code>cdaadr</code></li>
+<li><code>cdaar</code></li>
+<li><code>cdadar</code></li>
+<li><code>cdaddr</code></li>
+<li><code>cdadr</code></li>
+<li><code>cdar</code></li>
+<li><code>cddaar</code></li>
+<li><code>cddadr</code></li>
+<li><code>cddar</code></li>
+<li><code>cdddar</code></li>
+<li><code>cddddr</code></li>
+<li><code>cdddr</code></li>
+<li><code>cddr</code></li>
+<li><code>cdr</code></li>
+<li><code>ceiling</code></li>
+<li><code>char-&gt;integer</code></li>
+<li><code>char-alphabetic?</code></li>
+<li><code>char-ci&lt;=?</code></li>
+<li><code>char-ci&lt;?</code></li>
+<li><code>char-ci=?</code></li>
+<li><code>char-ci&gt;=?</code></li>
+<li><code>char-ci&gt;?</code></li>
+<li><code>char-downcase</code></li>
+<li><code>char-lower-case?</code></li>
+<li><code>char-numeric?</code></li>
+<li><code>char-ready?</code></li>
+<li><code>char-upcase</code></li>
+<li><code>char-upper-case?</code></li>
+<li><code>char-whitespace?</code></li>
+<li><code>char&lt;=?</code></li>
+<li><code>char&lt;?</code></li>
+<li><code>char=?</code></li>
+<li><code>char&gt;=?</code></li>
+<li><code>char&gt;?</code></li>
+<li><code>char?</code></li>
+<li><code>close-input-port</code></li>
+<li><code>close-output-port</code></li>
+<li><code>complex?</code></li>
+<li><code>cond</code></li>
+<li><code>cons</code></li>
+<li><code>cos</code></li>
+<li><code>current-input-port</code></li>
+<li><code>current-output-port</code></li>
+<li><code>define</code></li>
+<li><code>define-syntax</code></li>
+<li><code>delay</code></li>
+<li><code>denominator</code></li>
+<li><code>display</code></li>
+<li><code>do</code></li>
+<li><code>dynamic-wind</code></li>
+<li><code>eof-object?</code></li>
+<li><code>eq?</code></li>
+<li><code>equal?</code></li>
+<li><code>eqv?</code></li>
+<li><code>eval</code></li>
+<li><code>even?</code></li>
+<li><code>exact-&gt;inexact</code></li>
+<li><code>exact?</code></li>
+<li><code>exp</code></li>
+<li><code>expt</code></li>
+<li><code>floor</code></li>
+<li><code>for-each</code></li>
+<li><code>force</code></li>
+<li><code>gcd</code></li>
+<li><code>if</code></li>
+<li><code>imag-part</code></li>
+<li><code>inexact-&gt;exact</code></li>
+<li><code>inexact?</code></li>
+<li><code>input-port?</code></li>
+<li><code>integer-&gt;char</code></li>
+<li><code>integer?</code></li>
+<li><code>interaction-environment</code></li>
+<li><code>lambda</code></li>
+<li><code>lcm</code></li>
+<li><code>length</code></li>
+<li><code>let</code></li>
+<li><code>let*</code></li>
+<li><code>let-syntax</code></li>
+<li><code>letrec</code></li>
+<li><code>letrec-syntax</code></li>
+<li><code>list</code></li>
+<li><code>list-&gt;string</code></li>
+<li><code>list-&gt;vector</code></li>
+<li><code>list-ref</code></li>
+<li><code>list-tail</code></li>
+<li><code>list?</code></li>
+<li><code>load</code></li>
+<li><code>log</code></li>
+<li><code>magnitude</code></li>
+<li><code>make-polar</code></li>
+<li><code>make-rectangular</code></li>
+<li><code>make-string</code></li>
+<li><code>make-vector</code></li>
+<li><code>map</code></li>
+<li><code>max</code></li>
+<li><code>member</code></li>
+<li><code>memq</code></li>
+<li><code>memv</code></li>
+<li><code>min</code></li>
+<li><code>modulo</code></li>
+<li><code>negative?</code></li>
+<li><code>newline</code></li>
+<li><code>not</code></li>
+<li><code>null-environment</code></li>
+<li><code>null?</code></li>
+<li><code>number-&gt;string</code></li>
+<li><code>number?</code></li>
+<li><code>numerator</code></li>
+<li><code>odd?</code></li>
+<li><code>open-input-file</code></li>
+<li><code>open-output-file</code></li>
+<li><code>or</code></li>
+<li><code>output-port?</code></li>
+<li><code>pair?</code></li>
+<li><code>peek-char</code></li>
+<li><code>positive?</code></li>
+<li><code>procedure?</code></li>
+<li><code>quasiquote</code></li>
+<li><code>quote</code></li>
+<li><code>quotient</code></li>
+<li><code>rational?</code></li>
+<li><code>rationalize</code></li>
+<li><code>read</code></li>
+<li><code>read-char</code></li>
+<li><code>real-part</code></li>
+<li><code>real?</code></li>
+<li><code>remainder</code></li>
+<li><code>reverse</code></li>
+<li><code>round</code></li>
+<li><code>scheme-report-environment</code></li>
+<li><code>set!</code></li>
+<li><code>set-car!</code></li>
+<li><code>set-cdr!</code></li>
+<li><code>sin</code></li>
+<li><code>sqrt</code></li>
+<li><code>string</code></li>
+<li><code>string-&gt;list</code></li>
+<li><code>string-&gt;number</code></li>
+<li><code>string-&gt;symbol</code></li>
+<li><code>string-append</code></li>
+<li><code>string-ci&lt;=?</code></li>
+<li><code>string-ci&lt;?</code></li>
+<li><code>string-ci=?</code></li>
+<li><code>string-ci&gt;=?</code></li>
+<li><code>string-ci&gt;?</code></li>
+<li><code>string-copy</code></li>
+<li><code>string-fill!</code></li>
+<li><code>string-length</code></li>
+<li><code>string-ref</code></li>
+<li><code>string-set!</code></li>
+<li><code>string&lt;=?</code></li>
+<li><code>string&lt;?</code></li>
+<li><code>string=?</code></li>
+<li><code>string&gt;=?</code></li>
+<li><code>string&gt;?</code></li>
+<li><code>string?</code></li>
+<li><code>substring</code></li>
+<li><code>symbol-&gt;string</code></li>
+<li><code>symbol?</code></li>
+<li><code>syntax-rules</code></li>
+<li><code>tan</code></li>
+<li><code>truncate</code></li>
+<li><code>values</code></li>
+<li><code>vector</code></li>
+<li><code>vector-&gt;list</code></li>
+<li><code>vector-fill!</code></li>
+<li><code>vector-length</code></li>
+<li><code>vector-ref</code></li>
+<li><code>vector-set!</code></li>
+<li><code>vector?</code></li>
+<li><code>with-input-from-file</code></li>
+<li><code>with-output-to-file</code></li>
+<li><code>write</code></li>
+<li><code>write-char</code></li>
+<li><code>zero?</code></li>
+</ul>
+<h2 id="scheme-read"><code>(scheme read)</code></h2>
+<h3 id="read-port"><code>(read [port])</code></h3>
+<p>The read procedure converts external representations of Scheme objects into the objects themselves. That is, it is a parser for the non-terminal datum. It returns the next object parsable from the given textual input port, updating port to point to the first character past the end of the external representation of the object.</p>
+<p>The current implementation is not fully compatible with R7RS.</p>
 <h2 id="scheme-repl"><code>(scheme repl)</code></h2>
 <h3 id="interaction-environment"><code>(interaction-environment)</code></h3>
-<p>TODO</p>
+<p>This procedure returns a specifier for a mutable environment that contains an implementation-defined set of bindings, typically a superset of those exported by (scheme base). The intent is that this procedure will return the environment in which the implementation would evaluate expressions entered by the user into a REPL.</p>
 <h2 id="scheme-time"><code>(scheme time)</code></h2>
 <h3 id="current-jiffy"><code>(current-jiffy)</code></h3>
-<p>TODO</p>
+<p>Returns the number of jiffies as an exact integer that have elapsed since an arbitrary, implementation-defined epoch. A jiffy is an implementation-defined fraction of a second which is defined by the return value of the jiffies-per-second procedure. The starting epoch is guaranteed to be constant during a run of the program, but may vary between runs.</p>
 <h3 id="current-second"><code>(current-second)</code></h3>
-<p>TODO</p>
+<p>Returns an inexact number representing the current time on the International Atomic Time (TAI) scale. The value 0.0 represents midnight on January 1, 1970 TAI (equivalent to ten seconds before midnight Universal Time) and the value 1.0 represents one TAI second later. Neither high accuracy nor high precision are required; in particular, returning Coordinated Universal Time plus a suitable constant might be the best an implementation can do.</p>
 <h3 id="jiffies-per-second"><code>(jiffies-per-second)</code></h3>
-<p>TODO</p>
+<p>Returns an exact integer representing the number of jiffies per SI second. This value is an implementation-specified constant.</p>
 <h2 id="scheme-write"><code>(scheme write)</code></h2>
-<h3 id="display"><code>(display)</code></h3>
-<p>TODO</p>
-<h3 id="write"><code>(write)</code></h3>
-<p>TODO</p>
-<h3 id="write-simple"><code>(write-simple)</code></h3>
-<p>TODO</p>
-<h3 id="write-with-shared-structure"><code>(write-with-shared-structure)</code></h3>
-<p>TODO</p>
+<h3 id="display-obj-port"><code>(display obj [port])</code></h3>
+<p>Writes a representation of obj to the given textual output port. Strings that appear in the written representation are output as if by write-string instead of by write. Symbols are not escaped. Character objects appear in the representation as if written by write-char instead of by write.</p>
+<h3 id="write-obj-port"><code>(write obj [port])</code></h3>
+<p>Writes a representation of obj to the given textual output port. Strings that appear in the written representation are enclosed in quotation marks, and within those strings backslash and quotation mark characters are escaped by backslashes. Symbols that contain non-ASCII characters are escaped with vertical lines. Character objects are written using the # notation.</p>
+<p>If obj contains cycles which would cause an infinite loop using the normal written representation, then at least the objects that form part of the cycle must be represented using datum labels as described in section 2.4. Datum labels must not be used if there are no cycles.</p>
+<h3 id="write-simple-obj-port"><code>(write-simple obj [port])</code></h3>
+<p>The write-simple procedure is the same as write, except that shared structure is never represented using datum labels. This can cause write-simple not to terminate if obj contains circular structure.</p>
+<h3 id="write-shared-obj-port"><code>(write-shared obj [port])</code></h3>
+<p>The write-shared procedure is the same as write, except that shared structure must be represented using datum labels for all pairs and vectors that appear more than once in the output.</p>
+<h2 id="scheme-generator"><code>(scheme generator)</code></h2>
+<p>This is based on <a href="https://srfi.schemers.org/srfi-158/srfi-158.html">SRFI-158</a></p>
+<h3 id="abstract">Abstract</h3>
+<p>This SRFI defines utility procedures that create, transform, and consume generators. A generator is simply a procedure with no arguments that works as a source of values. Every time it is called, it yields a value. Generators may be finite or infinite; a finite generator returns an end-of-file object to indicate that it is exhausted. For example, read-char, read-line, and read are generators that generate characters, lines, and objects from the current input port. Generators provide lightweight laziness.</p>
+<p>This SRFI also defines procedures that return accumulators. An accumulator is the inverse of a generator: it is a procedure of one argument that works as a sink of values.</p>
+<h3 id="reference">Reference</h3>
+<h4 id="generator">Generator</h4>
+<h5 id="generator-arg-..."><code>(generator arg ...)</code></h5>
+<p>The simplest finite generator. Generates each of its arguments in turn. When no arguments are provided, it returns an empty generator that generates no values.</p>
+<h5 id="circular-generator-arg-..."><code>(circular-generator arg ...)</code></h5>
+<p>The simplest infinite generator. Generates each of its arguments in turn, then generates them again in turn, and so on forever.</p>
+<h5 id="make-iota-generator-count-start-step"><code>(make-iota-generator count [start [step]])</code></h5>
+<p>Creates a finite generator of a sequence of count numbers. The sequence begins with start (which defaults to 0) and increases by step (which defaults to 1). If both start and step are exact, it generates exact numbers; otherwise it generates inexact numbers. The exactness of count doesn’t affect the exactness of the results.</p>
+<h5 id="make-range-generator-start-end-step"><code>(make-range-generator start [end [step]])</code></h5>
+<p>Creates a generator of a sequence of numbers. The sequence begins with start, increases by step (default 1), and continues while the number is less than end, or forever if end is omitted. If both start and step are exact, it generates exact numbers; otherwise it generates inexact numbers. The exactness of end doesn’t affect the exactness of the results.</p>
+<h5 id="make-coroutine-generator-proc"><code>(make-coroutine-generator proc)</code></h5>
+<p>Creates a generator from a coroutine.</p>
+<p>The proc argument is a procedure that takes one argument, yield. When called, make-coroutine-generator immediately returns a generator g. When g is called, proc runs until it calls yield. Calling yield causes the execution of proc to be suspended, and g returns the value passed to yield.</p>
+<p>Whether this generator is finite or infinite depends on the behavior of proc. If proc returns, it is the end of the sequence — g returns an end-of-file object from then on. The return value of proc is ignored.</p>
+<p>The following code creates a generator that produces a series 0, 1, and 2 (effectively the same as (make-range-generator 0 3)) and binds it to g.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode scheme"><code class="sourceCode scheme"><a class="sourceLine" id="cb3-1" data-line-number="1">(<span class="kw">define</span><span class="fu"> g</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">  (make-coroutine-generator</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">   (<span class="kw">lambda</span> (yield) (<span class="kw">let</span> loop ((i <span class="dv">0</span>))</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">               (when (<span class="kw">&lt;</span> i <span class="dv">3</span>) (yield i) (loop (<span class="kw">+</span> i <span class="dv">1</span>)))))))</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">(generator-&gt;list g) <span class="co">;; =&gt; (0 1 2)</span></a></code></pre></div>
+<h5 id="list-generator-list"><code>(list-&gt;generator list)</code></h5>
+<p>Convert <code>LIST</code> into a generator.</p>
+<h5 id="vector-generator-vector-start-end"><code>(vector-&gt;generator vector [start [end]])</code></h5>
+<h5 id="reverse-vector-generator-vector-start-end"><code>(reverse-vector-&gt;generator vector [start [end]])</code></h5>
+<h5 id="string-generator-string-start-end"><code>(string-&gt;generator string [start [end]])</code></h5>
+<h5 id="bytevector-generator-bytevector-start-end"><code>(bytevector-&gt;generator bytevector [start [end]])</code></h5>
+<p>These procedures return generators that yield each element of the given argument. Mutating the underlying object will affect the results of the generator.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode scheme"><code class="sourceCode scheme"><a class="sourceLine" id="cb4-1" data-line-number="1">(generator-&gt;list (list-&gt;generator &#39;(<span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span>)))</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="co">;; =&gt; (1 2 3 4 5)</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">(generator-&gt;list (vector-&gt;generator &#39;#(<span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span>)))</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">  <span class="co">;; =&gt; (1 2 3 4 5)</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">(generator-&gt;list (reverse-vector-&gt;generator &#39;#(<span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span>)))</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">  <span class="co">;; =&gt; (5 4 3 2 1)</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">(generator-&gt;list (string-&gt;generator <span class="st">&quot;abcde&quot;</span>))</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">  <span class="co">;; =&gt; (#\a #\b #\c #\d #\e)</span></a></code></pre></div>
+<p>The generators returned by the constructors are exhausted once all elements are retrieved; the optional start-th and end-th arguments can limit the range the generator walks across.</p>
+<p>For reverse-vector-&gt;generator, the first value is the element right before the end-th element, and the last value is the start-th element. For all the other constructors, the first value the generator yields is the start-th element, and it ends right before the end-th element.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode scheme"><code class="sourceCode scheme"><a class="sourceLine" id="cb5-1" data-line-number="1">(generator-&gt;list (vector-&gt;generator &#39;#(a b c d e) <span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">  <span class="co">;; =&gt; (c d e)</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">(generator-&gt;list (vector-&gt;generator &#39;#(a b c d e) <span class="dv">2</span> <span class="dv">4</span>))</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">  <span class="co">;; =&gt; (c d)</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">(generator-&gt;list (reverse-vector-&gt;generator &#39;#(a b c d e) <span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">  <span class="co">;; =&gt; (e d c)</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">(generator-&gt;list (reverse-vector-&gt;generator &#39;#(a b c d e) <span class="dv">2</span> <span class="dv">4</span>))</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">  <span class="co">;; =&gt; (d c)</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">(generator-&gt;list (reverse-vector-&gt;generator &#39;#(a b c d e) <span class="dv">0</span> <span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">  <span class="co">;; =&gt; (b a)</span></a></code></pre></div>
+<h5 id="make-for-each-generator-for-each-obj"><code>(make-for-each-generator for-each obj)</code></h5>
+<p>A generator constructor that converts any collection obj to a generator that returns its elements using a for-each procedure appropriate for obj. This must be a procedure that when called as (for-each proc obj) calls proc on each element of obj. Examples of such procedures are for-each, string-for-each, and vector-for-each from R7RS. The value returned by for-each is ignored. The generator is finite if the collection is finite, which would typically be the case.</p>
+<p>The collections need not be conventional ones (lists, strings, etc.) as long as for-each can invoke a procedure on everything that counts as a member. For example, the following procedure allows for-each-generator to generate the digits of an integer from least to most significant:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode scheme"><code class="sourceCode scheme"><a class="sourceLine" id="cb6-1" data-line-number="1">(<span class="kw">define</span><span class="fu"> </span>(for-each-digit proc n)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">  (when (<span class="kw">&gt;</span> n <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">    (let-values (((div rem) (truncate/ n <span class="dv">10</span>)))</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">      (proc rem)</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">      (for-each-digit proc div))))</a></code></pre></div>
+<h5 id="make-unfold-generator-stop-mapper-successor-seed"><code>(make-unfold-generator stop? mapper successor seed)</code></h5>
+<p>A generator constructor similar to <code>(scheme list)</code> unfold.</p>
+<p>The stop? predicate takes a seed value and determines whether to stop. The mapper procedure calculates a value to be returned by the generator from a seed value. The successor procedure calculates the next seed value from the current seed value.</p>
+<p>For each call of the resulting generator, stop? is called with the current seed value. If it returns true, then the generator returns an end-of-file object. Otherwise, it applies mapper to the current seed value to get the value to return, and uses successor to update the seed value.</p>
+<p>This generator is finite unless stop? never returns true.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode scheme"><code class="sourceCode scheme"><a class="sourceLine" id="cb7-1" data-line-number="1">(generator-&gt;list (make-unfold-generator</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">                      (<span class="kw">lambda</span> (s) (<span class="kw">&gt;</span> s <span class="dv">5</span>))</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">                      (<span class="kw">lambda</span> (s) (* s <span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">                      (<span class="kw">lambda</span> (s) (<span class="kw">+</span> s <span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">                      <span class="dv">0</span>))</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">  <span class="co">;; =&gt; (0 2 4 6 8 10)</span></a></code></pre></div>
+<h5 id="gcons-item-...-generator"><code>(gcons* item ... generator)</code></h5>
+<p>Returns a generator that adds items in front of gen. Once the items have been consumed, the generator is guaranteed to tail-call gen.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode scheme"><code class="sourceCode scheme"><a class="sourceLine" id="cb8-1" data-line-number="1">(generator-&gt;list (gcons* &#39;a &#39;b (make-range-generator <span class="dv">0</span> <span class="dv">2</span>)))</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"> <span class="co">;; =&gt; (a b 0 1)</span></a></code></pre></div>
+<h5 id="gappend-generator-..."><code>(gappend generator ...)</code></h5>
+<p>Returns a generator that yields the items from the first given generator, and once it is exhausted, from the second generator, and so on.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode scheme"><code class="sourceCode scheme"><a class="sourceLine" id="cb9-1" data-line-number="1">(generator-&gt;list (gappend (make-range-generator <span class="dv">0</span> <span class="dv">3</span>) (make-range-generator <span class="dv">0</span> <span class="dv">2</span>)))</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"> <span class="co">;; =&gt; (0 1 2 0 1)</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">(generator-&gt;list (gappend))</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"> <span class="co">;; =&gt; ()</span></a></code></pre></div>
+<h5 id="gflatten-generator"><code>(gflatten generator)</code></h5>
+<p>Returns a generator that yields the elements of the lists produced by the given generator.</p>
+<h5 id="ggroup-generator-k-padding"><code>(ggroup generator k [padding])</code></h5>
+<p>Returns a generator that yields lists of k items from the given generator. If fewer than k elements are available for the last list, and padding is absent, the short list is returned; otherwise, it is padded by padding to length k.</p>
+<h5 id="gmerge-less-than-generator1-..."><code>(gmerge less-than generator1 ...)</code></h5>
+<p>Returns a generator that yields the items from the given generators in the order dictated by less-than. If the items are equal, the leftmost item is used first. When all of given generators are exhausted, the returned generator is exhausted also.</p>
+<p>As a special case, if only one generator is given, it is returned.</p>
+<h5 id="gmap-proc-generator-..."><code>(gmap proc generator ...)</code></h5>
+<p>When only one generator is given, returns a generator that yields the items from the given generator after invoking proc on them.</p>
+<p>When more than one generator is given, each item of the resulting generator is a result of applying proc to the items from each generator. If any of input generator is exhausted, the resulting generator is also exhausted.</p>
+<p>Note: This differs from generator-map-&gt;list, which consumes all values at once and returns the results as a list, while gmap returns a generator immediately without consuming input.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode scheme"><code class="sourceCode scheme"><a class="sourceLine" id="cb10-1" data-line-number="1">(generator-&gt;list (gmap <span class="kw">-</span> (make-range-generator <span class="dv">0</span> <span class="dv">3</span>)))</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"> <span class="co">;; =&gt; (0 -1 -2)</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">(generator-&gt;list (gmap <span class="kw">cons</span> (generator <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span>) (generator <span class="dv">4</span> <span class="dv">5</span>)))</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"> <span class="co">;; =&gt; ((1 . 4) (2 . 5))</span></a></code></pre></div>
+<h5 id="gcombine-proc-seed-generator-generator2"><code>(gcombine proc seed generator generator2)</code></h5>
+<p>A generator for mapping with state. It yields a sequence of sub-folds over proc.</p>
+<p>The proc argument is a procedure that takes as many arguments as the input generators plus one. It is called as (proc v1 v2 … seed), where v1, v2, … are the values yielded from the input generators, and seed is the current seed value. It must return two values, the yielding value and the next seed. The result generator is exhausted when any of the genn generators is exhausted, at which time all the others are in an undefined state.</p>
+<h5 id="gfilter-predicate-generator"><code>(gfilter predicate generator)</code></h5>
+<h5 id="gremove-predicate-generator"><code>(gremove predicate generator)</code></h5>
+<p>Returns generators that yield the items from the source generator, except those on which pred answers false or true respectively.</p>
+<h5 id="gstate-filter-proc-seed-generator"><code>(gstate-filter proc seed generator)</code></h5>
+<p>Returns a generator that obtains items from the source generator and passes an item and a state (whose initial value is seed) as arguments to proc. Proc in turn returns two values, a boolean and a new value of the state. If the boolean is true, the item is returned; otherwise, this algorithm is repeated until gen is exhausted, at which point the returned generator is also exhausted. The final value of the state is discarded.</p>
+<h5 id="gtake-gen-k-padding"><code>(gtake gen k [padding])</code></h5>
+<h5 id="gdrop-gen-k"><code>(gdrop gen k)</code></h5>
+<p>These are generator analogues of SRFI 1 take and drop. Gtake returns a generator that yields (at most) the first k items of the source generator, while gdrop returns a generator that skips the first k items of the source generator.</p>
+<p>These won’t complain if the source generator is exhausted before generating k items. By default, the generator returned by gtake terminates when the source generator does, but if you provide the padding argument, then the returned generator will yield exactly k items, using the padding value as needed to provide sufficient additional values.</p>
+<h5 id="gtake-while-pred-gen"><code>gtake-while pred gen</code></h5>
+<h5 id="gdrop-while-pred-gen"><code>gdrop-while pred gen</code></h5>
+<p>The generator analogues of SRFI-1 take-while and drop-while. The generator returned from gtake-while yields items from the source generator as long as pred returns true for each. The generator returned from gdrop-while first reads and discards values from the source generator while pred returns true for them, then starts yielding items returned by the source.</p>
+<h5 id="gdelete-item-gen"><code>(gdelete item gen [=])</code></h5>
+<p>Creates a generator that returns whatever gen returns, except for any items that are the same as item in the sense of =, which defaults to equal?. The = predicate is passed exactly two arguments, of which the first was generated by gen before the second.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode scheme"><code class="sourceCode scheme"><a class="sourceLine" id="cb11-1" data-line-number="1">(generator-&gt;list (gdelete <span class="dv">3</span> (generator <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span> <span class="dv">3</span> <span class="dv">6</span> <span class="dv">7</span>)))</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">  <span class="co">;; =&gt; (1 2 4 5 6 7)</span></a></code></pre></div>
+<h5 id="gdelete-neighbor-dups-gen"><code>(gdelete-neighbor-dups gen [=])</code></h5>
+<p>Creates a generator that returns whatever gen returns, except for any items that are equal to the preceding item in the sense of =, which defaults to equal?. The = predicate is passed exactly two arguments, of which the first was generated by gen before the second.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode scheme"><code class="sourceCode scheme"><a class="sourceLine" id="cb12-1" data-line-number="1">(generator-&gt;list (gdelete-neighbor-dups (list-&gt;generator &#39;(a a b c a a a d c))))</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">  <span class="co">;; =&gt; (a b c a d c)</span></a></code></pre></div>
+<h5 id="gindex-value-gen-index-gen"><code>(gindex value-gen index-gen)</code></h5>
+<p>Creates a generator that returns elements of value-gen specified by the indices (non-negative exact integers) generated by index-gen. It is an error if the indices are not strictly increasing, or if any index exceeds the number of elements generated by value-gen. The result generator is exhausted when either generator is exhausted, at which time the other is in an undefined state.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode scheme"><code class="sourceCode scheme"><a class="sourceLine" id="cb13-1" data-line-number="1">(generator-&gt;list (gindex (list-&gt;generator &#39;(a b c d e f))</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">                         (list-&gt;generator &#39;(<span class="dv">0</span> <span class="dv">2</span> <span class="dv">4</span>))))</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">  <span class="co">;; =&gt; (a c e)</span></a></code></pre></div>
+<h5 id="gselect-value-gen-truth-gen"><code>(gselect value-gen truth-gen)</code></h5>
+<p>Creates a generator that returns elements of value-gen that correspond to the values generated by truth-gen. If the current value of truth-gen is true, the current value of value-gen is generated, but otherwise not. The result generator is exhausted when either generator is exhausted, at which time the other is in an undefined state.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode scheme"><code class="sourceCode scheme"><a class="sourceLine" id="cb14-1" data-line-number="1">(generator-&gt;list (gselect (list-&gt;generator &#39;(a b c d e f))</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">                          (list-&gt;generator &#39;(<span class="dv">#t</span> <span class="dv">#f</span> <span class="dv">#f</span> <span class="dv">#t</span> <span class="dv">#t</span> <span class="dv">#f</span>))))</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">  <span class="co">;; =&gt; (a d e)</span></a></code></pre></div>
+<h5 id="generator-list-generator-k"><code>(generator-&gt;list generator [k])</code></h5>
+<p>Reads items from generator and returns a newly allocated list of them. By default, it reads until the generator is exhausted.</p>
+<p>If an optional argument k is given, it must be a non-negative integer, and the list ends when either k items are consumed, or generator is exhausted; therefore generator can be infinite in this case.</p>
+<h5 id="generator-reverse-list-generator-k"><code>(generator-&gt;reverse-list generator [k])</code></h5>
+<p>Reads items from generator and returns a newly allocated list of them in reverse order. By default, this reads until the generator is exhausted.</p>
+<p>If an optional argument k is given, it must be a non-negative integer, and the list ends when either k items are read, or generator is exhausted; therefore generator can be infinite in this case.</p>
+<h5 id="generator-vector-generator-k"><code>(generator-&gt;vector generator [k])</code></h5>
+<p>Reads items from generator and returns a newly allocated vector of them. By default, it reads until the generator is exhausted.</p>
+<p>If an optional argument k is given, it must be a non-negative integer, and the list ends when either k items are consumed, or generator is exhausted; therefore generator can be infinite in this case.</p>
+<h5 id="generator-vector-vector-at-generator"><code>(generator-&gt;vector! vector at generator)</code></h5>
+<p>Reads items from generator and puts them into vector starting at index at, until vector is full or generator is exhausted. Generator can be infinite. The number of elements generated is returned.</p>
+<h5 id="generator-string-generator-k"><code>(generator-&gt;string generator [k])</code></h5>
+<p>Reads items from generator and returns a newly allocated string of them. It is an error if the items are not characters. By default, it reads until the generator is exhausted.</p>
+<p>If an optional argument k is given, it must be a non-negative integer, and the string ends when either k items are consumed, or generator is exhausted; therefore generator can be infinite in this case.</p>
+<h5 id="generator-fold-proc-seed-generator-..."><code>(generator-fold proc seed generator ...)</code></h5>
+<p>Works like <code>(scheme list)</code> fold on the values generated by the generator arguments.</p>
+<p>When one generator is given, for each value v generated by gen, proc is called as (proc v r), where r is the current accumulated result; the initial value of the accumulated result is seed, and the return value from proc becomes the next accumulated result. When gen is exhausted, the accumulated result at that time is returned from generator-fold.</p>
+<p>When more than one generator is given, proc is invoked on the values returned by all the generator arguments followed by the current accumulated result. The procedure terminates when any of the genn generators is exhausted, at which time all the others are in an undefined state.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode scheme"><code class="sourceCode scheme"><a class="sourceLine" id="cb15-1" data-line-number="1">(with-input-from-string <span class="st">&quot;a b c d e&quot;</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">  (<span class="kw">lambda</span> () (generator-fold <span class="kw">cons</span> &#39;z <span class="kw">read</span>)))</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">  <span class="co">;; =&gt; (e d c b a . z)</span></a></code></pre></div>
+<h5 id="generator-for-each-proc-generator-..."><code>(generator-for-each proc generator ...)</code></h5>
+<p>A generator analogue of for-each that consumes generated values using side effects. Repeatedly applies proc on the values yielded by gen, gen2 … until any one of the generators is exhausted, at which time all the others are in an undefined state. The values returned from proc are discarded. Returns an unspecified value.</p>
+<h5 id="generator-map-list-proc-generator-..."><code>(generator-map-&gt;list proc generator ...)</code></h5>
+<p>A generator analogue of map that consumes generated values, processes them through a mapping function, and returns a list of the mapped values. Repeatedly applies proc on the values yielded by gen, gen2 … until any one of the generators is exhausted, at which time all the others are in an undefined state. The values returned from proc are accumulated into a list, which is returned.</p>
+<h5 id="generator-find-predicate-generator"><code>(generator-find predicate generator)</code></h5>
+<p>Returns the first item from the generator gen that satisfies the predicate pred, or #f if no such item is found before gen is exhausted. If gen is infinite, generator-find will not return if it cannot find an appropriate item.</p>
+<h5 id="generator-count-predicate-generator"><code>(generator-count predicate generator)</code></h5>
+<p>Returns the number of items available from the generator gen that satisfy the predicate pred.</p>
+<h5 id="generator-any-predicate-generator"><code>(generator-any predicate generator)</code></h5>
+<p>Applies predicate to each item from gen. As soon as it yields a true value, the value is returned without consuming the rest of gen. If gen is exhausted, returns #f.</p>
+<h5 id="generator-every-predicate-generator"><code>(generator-every predicate generator)</code></h5>
+<p>Applies pred to each item from gen. As soon as it yields a false value, the value is returned without consuming the rest of gen. If gen is exhausted, returns the last value returned by pred, or #t if pred was never called.</p>
+<h5 id="generator-unfold-gen-unfold-arg-..."><code>(generator-unfold gen unfold arg ...)</code></h5>
+<p>Equivalent to <code>(unfold eof-object? (lambda (x) x) (lambda (x) (gen)) (gen) arg ...)</code>. The values of gen are unfolded into the collection that unfold creates.</p>
+<p>The signature of the unfold procedure is (unfold stop? mapper successor seed args …). Note that the vector-unfold and vector-unfold-right of SRFI 43 and SRFI 133 do not have this signature and cannot be used with this procedure. To unfold into a vector, use SRFI 1’s unfold and then apply list-&gt;vector to the result.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode scheme"><code class="sourceCode scheme"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co">;; Iterates over string and unfolds into a list using SRFI 1 unfold</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">(generator-unfold (make-for-each-generator string-for-each <span class="st">&quot;abc&quot;</span>) unfold)</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co">;; =&gt; (#\a #\b #\c)</span></a></code></pre></div>
+<h4 id="accumulator">Accumulator</h4>
+<h5 id="make-accumulator-kons-knil-finalizer"><code>(make-accumulator kons knil finalizer)</code></h5>
+<p>Returns an accumulator that, when invoked on an object other than an end-of-file object, invokes kons on its argument and the accumulator’s current state, using the same order as a function passed to fold. It then sets the accumulator’s state to the value returned by kons and returns an unspecified value. The initial state of the accumulator is set to knil. However, if an end-of-file object is passed to the accumulator, it returns the result of tail-calling the procedure finalizer on the state. Repeated calls with an end-of-file object will reinvoke finalizer.</p>
+<h5 id="count-accumulator"><code>(count-accumulator)</code></h5>
+<p>Returns an accumulator that, when invoked on an object, adds 1 to a count inside the accumulator and returns an unspecified value. However, if an end-of-file object is passed, the accumulator returns the count.</p>
+<h5 id="list-accumulator"><code>(list-accumulator)</code></h5>
+<p>Returns an accumulator that, when invoked on an object, adds that object to a list inside the accumulator in order of accumulation and returns an unspecified value. However, if an end-of-file object is passed, the accumulator returns the list.</p>
+<h5 id="reverse-list-accumulator"><code>(reverse-list-accumulator)</code></h5>
+<p>Returns an accumulator that, when invoked on an object, adds that object to a list inside the accumulator in reverse order of accumulation and returns an unspecified value. However, if an end-of-file object is passed, the accumulator returns the list.</p>
+<h5 id="vector-accumulator"><code>(vector-accumulator)</code></h5>
+<p>Returns an accumulator that, when invoked on an object, adds that object to a vector inside the accumulator in order of accumulation and returns an unspecified value. However, if an end-of-file object is passed, the accumulator returns the vector.</p>
+<h5 id="reverse-vector-accumulator"><code>(reverse-vector-accumulator)</code></h5>
+<p>Returns an accumulator that, when invoked on an object, adds that object to a vector inside the accumulator in reverse order of accumulation and returns an unspecified value. However, if an end-of-file object is passed, the accumulator returns the vector.</p>
+<h5 id="vector-accumulator-vector-at"><code>(vector-accumulator! vector at)</code></h5>
+<p>Returns an accumulator that, when invoked on an object, adds that object to consecutive positions of vector starting at at in order of accumulation. It is an error to try to accumulate more objects than vector will hold. An unspecified value is returned. However, if an end-of-file object is passed, the accumulator returns vector.</p>
+<h5 id="string-accumulator"><code>(string-accumulator)</code></h5>
+<p>Returns an accumulator that, when invoked on a character, adds that character to a string inside the accumulator in order of accumulation and returns an unspecified value. However, if an end-of-file object is passed, the accumulator returns the string.</p>
+<h5 id="bytevector-accumulator"><code>(bytevector-accumulator)</code></h5>
+<p>Returns an accumulator that, when invoked on a byte, adds that integer to a bytevector inside the accumulator in order of accumulation and returns an unspecified value. However, if an end-of-file object is passed, the accumulator returns the bytevector.</p>
+<h5 id="bytevector-accumulator-bytevector-at"><code>(bytevector-accumulator! bytevector at)</code></h5>
+<p>Returns an accumulator that, when invoked on a byte, adds that byte to consecutive positions of bytevector starting at at in order of accumulation. It is an error to try to accumulate more bytes than vector will hold. An unspecified value is returned. However, if an end-of-file object is passed, the accumulator returns bytevector.</p>
+<h5 id="sum-accumulator"><code>(sum-accumulator)</code></h5>
+<p>Returns an accumulator that, when invoked on a number, adds that number to a sum inside the accumulator in order of accumulation and returns an unspecified value. However, if an end-of-file object is passed, the accumulator returns the sum.</p>
+<h5 id="product-accumulator">`(product-accumulator)</h5>
+<p>Returns an accumulator that, when invoked on a number, multiplies that number to a product inside the accumulator in order of accumulation and returns an unspecified value. However, if an end-of-file object is passed, the accumulator returns the product.</p>

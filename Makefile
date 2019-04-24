@@ -19,6 +19,7 @@ DOCUMENTATION_FILES =			\
 	scheme/repl.md			\
 	scheme/time.md			\
 	scheme/write.md			\
+	scheme/generator.md		\
 
 doc: ## Build the documentation with pandoc in html and pdf format.
 	pandoc  $(DOCUMENTATION_FILES) -o guile-r7rs.pdf
