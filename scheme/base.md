@@ -59,19 +59,23 @@ Greater than or equal. Return a boolean.
 
 Return the absolute value of `NUMBER`.
 
-### `(and obj ...)`
+### `(and test1 ...)`
 
-Return `#f` if one the scheme object is `#f` otherwise it return the
-last object.
+The `test` expressions are evaluated from left to right, and if any
+expression evaluates to `#f`, then #f is returned. Any remaining
+expressions are not evaluated. If all the expressions evaluate to true
+values, the values of the last expression are returned. If there are
+no expressions, then `#t` is returned.
 
 ### `(append lst ...)`
 
 Return the list made of the list passed as parameters in the same
 order.
 
-### `(apply proc obj ... lst)`
+### `(apply proc arg1 ... args)`
 
-TODO
+The apply procedure calls proc with the elements of the list `(append
+(list arg1 ...) args)` as the actual arguments.
 
 ### `(assoc obj alist)`
 
@@ -88,13 +92,32 @@ predicate `eq?`. Or it returns `#f`.
 Return the first pair which `car` is equal to `OBJ` according to the
 predicate `eqv?`. Or it returns `#f`.
 
-### `begin`
+### `begin` syntax
 
-TODO
+There is two uses of `begin`.
+
+#### `(begin ⟨expression or definition⟩ ...)`
+
+This form of begin can appear as part of a ⟨body⟩, or at the outermost
+level of a ⟨program⟩, or at the REPL, or directly nested in a begin
+that is itself of this form. It causes the contained expressions and
+definitions to be evaluated exactly as if the enclosing begin
+construct were not present.
+
+TODO: example
+
+#### `(begin ⟨expression1⟩ ⟨expression2⟩ ...)`
+
+This form of begin can be used as an ordinary expression. The
+⟨expression⟩s are evaluated sequentially from left to right, and the
+values of the last ⟨expression⟩ are returned. This expression type is
+used to sequence side effects such as assignments or input and output.
+
+TODO: example
 
 ### `binary-port?`
 
-TODO
+TODO: not implemented
 
 ### `(boolean=? obj ...)`
 
@@ -105,38 +128,48 @@ boolean. Otherwise it return `#f`.
 
 Return `#t` if `OBJ` is a boolean. Otherwise `#f`.
 
-### `bytevector`
+### `(bytevector byte ...)`
 
-TODO
+Returns a newly allocated bytevector containing its arguments.
 
 ### `(bytevector-append bytevector ...)`
 
-Return a bytevector where all bytes from the bytevectors passed as
-parameters are packed in the same order.
+Returns a newly allocated bytevector whose elements arethe
+concatenation of the elements in the given bytevectors.
 
-### `(bytevector-copy bytevector)`
+### `(bytevector-copy bytevector [start [end]])`
 
-TODO
+Returns a newly allocated bytevector containing the bytes in
+bytevector between start and end.
 
-### `bytevector-copy!`
+### `(bytevector-copy! to at from [start [end]])`
 
-TODO
+Copies the bytes of bytevector `from` between `start` and `end` to
+bytevector `TO`, starting at `at`.  The order in which bytes are
+copied is unspecified, except that if the source and destination
+overlap, copying takes place as if the source is first copied into a
+temporary bytevector and then into the destination.  This can be
+achieved without allocating storage by making sure to copy in the
+correct direction in such circumstances.
 
-### `bytevector-length`
+### `(bytevector-length bytevector)`
 
-TODO
+Returns the length of bytevector in bytes as an exact integer.
 
 ### `bytevector-u8-ref`
 
-TODO
+Returns the `K`th byte of `BYTEVECTOR`.  It is an error if `K` is not
+a valid index of `BYTEVECTOR`.
 
 ### `bytevector-u8-set!`
 
-TODO
+Stores `BYTE` as the `K`th byte of `BYTEVECTOR`.
 
-### `bytevector?`
+It is an error if `K` is not a valid index of `BYTEVECTOR`.
 
-TODO
+### `(bytevector? obj)`
+
+Returns `#t` if `OBJ` is a bytevector. Otherwise, `#f` is returned.
 
 ### `caar`
 
@@ -146,27 +179,70 @@ TODO
 
 TODO
 
-### `call-with-current-continuation`
+### `(call-with-current-continuation proc)`
 
-TODO
+It is an error if proc does not accept one argument.
 
-### `call-with-port`
+The procedure call-with-current-continuation (or its equivalent
+abbreviation call/cc) packages the current continuation (see the
+rationale below) as an “escape procedure” and passes it as an argument
+to proc. The escape procedure is a Scheme procedure that, if it is
+later called, will abandon whatever continuation is in effect at that
+later time and will instead use the continuation that was in effect
+when the escape procedure was created. Calling the escape procedure
+will cause the invocation of before and after thunks installed using
+dynamic-wind.
 
-TODO
+The escape procedure accepts the same number of arguments as the
+continuation to the original call to
+call-with-current-continuation. Most continuations take only one
+value. Continuations created by the call-with-values procedure
+(including the initialization expressions of define-values,
+let-values, and let*-values expressions), take the number of values
+that the consumer expects. The continuations of all non-final
+expressions within a sequence of expressions, such as in lambda,
+case-lambda, begin, let, let*, letrec, letrec*, let-values,
+let*-values, let-syntax, letrec-syntax, parameterize, guard, case,
+cond, when, and unless expressions, take an arbitrary number of values
+because they discard the values passed to them in any event. The
+effect of passing no values or more than one value to continuations
+that were not created in one of these ways is unspecified.
 
-### `call-with-values`
+The escape procedure that is passed to proc has unlimited extent just
+like any other procedure in Scheme. It can be stored in variables or
+data structures and can be called as many times as desired. However,
+like the raise and error procedures, it never returns to its caller.
 
-TODO
+TODO: example
+
+### `(call-with-port port proc)`
+
+The `call-with-port` procedure calls `PROC` with `PORT` as an
+argument.  If `PROC` returns, then the `PORT` is closed automatically
+and the values yielded by the `PROC` are returned. If `PROC` does not
+return, then the `PORT` must not be closed automatically unless it is
+possible to prove that the port will never again be used for a read or
+write operation.
+
+It is an error if `PROC` does not accept one argument.
+
+### `(call-with-values producer consumer)`
+
+Calls its producer argument with no arguments and a continuation that,
+when passed some values, calls the consumer procedure with those values
+as arguments.  The continuation for the call to consumer is the
+continuation of the call to `call-with-values`.
 
 ### `call/cc`
 
-Shortcut for `call-with-continuation`.
+Abbreviation for `call-with-continuation`.
 
 ### `car`
 
-TODO
+Returns the contents of the car field ofpair.  Note that it is an error
+to take the `car` of the empty list.
 
-### `case`
+### `(case key clause1 clause2 ...)` syntax
 
 TODO
 
@@ -180,19 +256,26 @@ TODO
 
 ### `cdr`
 
-TODO
+Returns the contents of the `cdr` field of pair.  Note that it is an
+error to take the `cdr` of the empty list.
 
-### `ceiling`
+### `(ceiling x)`
 
-TODO
+The ceiling procedure returns the smallest integer not smaller than x.
 
-### `char->integer`
+### `(char->integer char)`
 
-TODO
+Given a Unicode character, `char->integer` returns an exact integer
+between 0 and #xD7FF or between #xE000 and #x10FFFF which is equal to
+the Unicode scalar value of that character. Given a non-Unicode
+character, it returns an exact integer greater than #x10FFFF.
 
-### `char-ready?`
+### `(char-ready? [port])`
 
-TODO
+Returns #t if a character is ready on the textual input port and
+returns #f otherwise. If char-ready returns #t then the next read-char
+operation on the given port is guaranteed not to hang. If the port is
+at end of file then char-ready? returns #t.
 
 ### `char<=?`
 
@@ -216,23 +299,26 @@ TODO
 
 ### `char?`
 
-TODO
+Returns #t if obj is a character, otherwise returns #f.
 
-### `close-input-port`
+### `(close-input-port port)`
 
-TODO
+Closes the resource associated with port, rendering the port incapable
+of delivering or accepting data.
 
-### `close-output-port`
+### `(close-output-port port)`
 
-TODO
+Closes the resource associated with port, rendering the port incapable
+of delivering or accepting data.
 
-### `close-port`
+### `(close-port port)`
 
-TODO
+Closes the resource associated with port, rendering the port incapable
+of delivering or accepting data.
 
 ### `complex?`
 
-TODO
+Returns #t if obj is a complex number, otherwise returns #f.
 
 ### `cond`
 
@@ -240,23 +326,29 @@ TODO
 
 ### `cond-expand`
 
-TODO
+TODO: not implemented
 
-### `cons`
+### `(cons obj1 obj2)`
 
-TODO
+Returns a newly allocated pair whose car is obj1 and whose cdr is
+obj2. The pair is guaranteed to be different (in the sense of eqv?)
+from every existing object.
 
 ### `current-error-port`
 
-TODO
+Returns the current default error port (an output port). That
+procedure is also a parameter object, which can be overridden with
+`parameterize`.
 
 ### `current-input-port`
 
-TODO
+Returns the current default input port. That procedure is also a
+parameter object, which can be overridden with `parameterize`.
 
 ### `current-output-port`
 
-TODO
+Returns the current default output port. That procedure is also a
+parameter object, which can be overridden with `parameterize`.
 
 ### `define`
 
@@ -270,93 +362,143 @@ TODO
 
 TODO
 
-### `define-values`
+### `(define-values var1 ... expr)` syntax
 
-TODO
+creates multiple definitions from a single expression returning
+multiple values. It is allowed wherever define is allowed.
 
-### `denominator`
+### `(denominator q)`
 
-TODO
+Return the denominator of their argument; the result is computed as if
+the argument was represented as a fraction in lowest terms. The
+denominator is always positive. The denominator of 0 is defined to be
+1.
 
 ### `do`
 
 TODO
 
-### `dynamic-wind`
+### `(dynamic-wind before thunk after)`
 
 TODO
 
-### `eof-object`
+### `(eof-object)`
 
-TODO
+Returns an end-of-file object, not necessarily unique.
 
-### `eof-object?`
+### `(eof-object? obj)`
 
-TODO
+Returns #t if obj is an end-of-file object, otherwise returns #f. A
+end-of-file object will ever be an object that can be read in using
+read.
 
-### `eq?`
+### `(eq? obj1 obj2)`
 
-TODO
+The eq? procedure is similar to eqv? except that in some cases it is
+capable of discerning distinctions finer than those detectable by
+eqv?. It must always return #f when eqv? also would, but may return #f
+in some cases where eqv? would return #t.
 
-### `equal?`
+On symbols, booleans, the empty list, pairs, and records, and also on
+non-empty strings, vectors, and bytevectors, eq? and eqv? are
+guaranteed to have the same behavior. On procedures, eq? must return
+true if the arguments’ location tags are equal. On numbers and
+characters, eq?’s behavior is implementation-dependent, but it will
+always return either true or false. On empty strings, empty vectors,
+and empty bytevectors, eq? may also behave differently from eqv?.
 
-TODO
+### `(equal? obj1 obj2)`
 
-### `eqv?`
+The equal? procedure, when applied to pairs, vectors, strings and
+bytevectors, recursively compares them, returning #t when the
+unfoldings of its arguments into (possibly infinite) trees are equal
+(in the sense of equal?) as ordered trees, and #f otherwise. It
+returns the same as eqv? when applied to booleans, symbols, numbers,
+characters, ports, procedures, and the empty list. If two objects are
+eqv?, they must be equal? as well. In all other cases, equal? may
+return either #t or #f.
 
-TODO
+Even if its arguments are circular data structures, equal? must always
+terminate.
+
+### `(eqv? obj1 obj2)`
+
+The eqv? procedure defines a useful equivalence relation on
+objects. Briefly, it returns #t if obj1 and obj2 are normally regarded
+as the same object.
+
+TODO: complete based on r7rs small and guile.
 
 ### `(error [who] message . irritants)`
 
-Raise an error.
+Raises an exception as if by calling raise on a newly allocated
+implementation-defined object which encapsulates the information
+provided by message, as well as any objs, known as the irritants. The
+procedure error-object? must return #t on such objects.
 
-### `error-object-irritants`
+### `(error-object-irritants error)`
+
+Returns a list of the irritants encapsulated by error.
+
+### `(error-object-message error)`
+
+Returns the message encapsulated by error.
+
+### `(error-object? obj)`
+
+Returns #t if obj is an object created by `error` or one of an
+implementation-defined set of objects. Otherwise, it returns #f. The
+objects used to signal errors, including those which satisfy the
+predicates `file-error?` and `read-error?`, may or may not satisfy
+`error-object?`.
+
+### `(even? number)`
+
+Return `#t` if `NUMBER` is even. Otherwise `#f`.
+
+### `(exact z)`
+
+TODO: FIXME
+
+The procedure exact returns an exact representation of z. The value
+returned is the exact number that is numerically closest to the
+argument. For exact arguments, the result is the same as the
+argument. For inexact non-integral real arguments, the implementation
+may return a rational approximation, or may report an implementation
+violation. For inexact complex arguments, the result is a complex
+number whose real and imaginary parts are the result of applying exact
+to the real and imaginary parts of the argument, respectively. If an
+inexact argument has no reasonably close exact equivalent, (in the
+sense of `=`), then a violation of an implementation restriction may
+be reported.
+
+### `(exact-integer-sqrt k)`
 
 TODO
 
-### `error-object-message`
+### `(exact-integer? z)`
 
-TODO
+Returns #t if z is both exact and an integer; otherwise returns #f.
 
-### `error-object?`
+### `(exact? z)`
 
-TODO
+Return `#t` if `Z` is exact. Otherwise `#f`.
 
-### `even?`
+### `(expt z1 z2)`
 
-TODO
-
-### `exact`
-
-TODO
-
-### `exact-integer-sqrt`
-
-TODO
-
-### `exact-integer?`
-
-TODO
-
-### `exact?`
-
-TODO
-
-### `expt`
-
-TODO
+Returns `z1` raised to the power `z2`.
 
 ### `features`
 
-TODO
+TODO: no implemented
 
-### `file-error?`
+### `(file-error? error)`
 
-TODO
+TODO: not implemented?
 
-### `floor`
+### `(floor x)`
 
-TODO
+The floor procedure returns the largest integer not larger than x.
 
 ### `floor-quotient`
 
@@ -370,425 +512,659 @@ TODO
 
 TODO
 
-### `flush-output-port`
+### `(flush-output-port [port])`
 
-TODO
+Flushes any buffered output from the buffer of output-port to the
+underlying file or device and returns an unspecified value.
 
-### `for-each`
+### `(for-each proc list1 ...)`
 
-TODO
+It is an error if proc does not accept as many arguments as there are lists.
 
-### `gcd`
+The arguments to for-each are like the arguments to map, but for-each
+calls proc for its side effects rather than for its values. Unlike
+map, for-each is guaranteed to call proc on the elements of the lists
+in order from the first element(s) to the last, and the value returned
+by for-each is unspecified. If more than one list is given and not all
+lists have the same length, for-each terminates when the shortest list
+runs out. The lists can be circular, but it is an error if all of them
+are circular.
 
-TODO
+### `(gcd n1 ...)`
+
+Return the greatest common divisor.
 
 ### `get-output-bytevector`
 
-TODO
+It is an error if port was not created with open-output-bytevector.
 
-### `get-output-string`
+Returns a bytevector consisting of the bytes that have been output to
+the port so far in the order they were output.
 
-TODO
+### `(get-output-string port)`
+
+It is an error if port was not created with open-output-string.
+
+Returns a string consisting of the characters that have been output to
+the port so far in the order they were output.
 
 ### `guard`
 
 TODO
 
-### `if`
+### `(if expr then [else])`
 
 TODO
 
 ### `include`
 
-TODO
+TODO: not implemented?
 
 ### `include-ci`
 
-TODO
+TODO: not implemented?
 
-### `inexact`
+### `(inexact z)`
 
-TODO
+The procedure inexact returns an inexact representation of z. The
+value returned is the inexact number that is numerically closest to
+the argument. For inexact arguments, the result is the same as the
+argument. For exact complex numbers, the result is a complex number
+whose real and imaginary parts are the result of applying inexact to
+the real and imaginary parts of the argument, respectively. If an
+exact argument has no reasonably close inexact equivalent (in the
+sense of `=`), then a violation of an implementation restriction may
+be reported.
 
-### `inexact?`
+### `(inexact? z)`
 
-TODO
+Return `#t` if `Z` is inexact. Otherwise `#f`.
 
-### `input-port-open?`
+### `(input-port-open? port)`
 
-TODO
+Returns #t if port is still open and capable of performing input, and
+#f otherwise.
 
-### `input-port?`
+### `(input-port? obj)`
 
-TODO
+Return `#t` if obj is an input port. Otherwise it return `#f`.
 
-### `integer->char`
+### `(integer->char integer)`
 
-TODO
+Given an exact integer that is the value returned by a character when
+char->integer is applied to it, integer->char returns that character.
 
-### `integer?`
+### `(integer? obj)`
 
-TODO
+Return `#t` if `OBJ` is an integer. Otherwise `#f`.
 
 ### `lambda`
 
 TODO
 
-### `lcm`
+### `(lcm n1 ...)`
 
-TODO
+Return the least common multiple of its arguments.
 
-### `length`
+### `(length list)`
 
-TODO
+Returns the length of list.
 
 ### `let`
-TODO
 
+TODO
 
 ### `let*`
-TODO
 
+TODO
 
 ### `let*-values`
-TODO
 
+TODO
 
 ### `let-syntax`
-TODO
 
+TODO
 
 ### `let-values`
-TODO
 
+TODO
 
 ### `letrec`
-TODO
 
+TODO
 
 ### `letrec*`
-TODO
 
+TODO
 
 ### `letrec-syntax`
+
 TODO
 
+### `(list obj ...)`
 
-### `list`
+Returns a newly allocated list of its arguments.
+
+### `(list->string list)`
+
+It is an error if any element of list is not a character.
+
+list->string returns a newly allocated string formed from the elements
+in the list list.
+
+### `(list->vector list)`
+
+The list->vector procedure returns a newly created vector initialized
+to the elements of the list list.
+
+### `(list-copy obj)`
+
+Returns a newly allocated copy of the given obj if it is a list. Only
+the pairs themselves are copied; the cars of the result are the same
+(in the sense of eqv?) as the cars of list. If obj is an improper
+list, so is the result, and the final cdrs are the same in the sense
+of eqv?. An obj which is not a list is returned unchanged. It is an
+error if obj is a circular list.
+
+### `(list-ref list k)`
+
+The list argument can be circular, but it is an error if list has
+fewer than k elements.
+
+Returns the kth element of list. (This is the same as the car of
+(list-tail list k).)
+
+### `(list-set! list k obj)`
+
+It is an error if k is not a valid index of list.
+
+The list-set! procedure stores obj in element k of list.
+
+### `(list-tail list k)`
+
+It is an error if list has fewer than k elements.
+
+Returns the sublist of list obtained by omitting the first k elements.
+
+### `(list? obj)`
+
+Return `#t` if `OBJ` is a list. Otherwise `#f`.
+
+### `(make-bytevector k [byte])`
+
+he make-bytevector procedure returns a newly allocated bytevector of
+length k. If byte is given, then all elements of the bytevector are
+initialized to byte, otherwise the contents of each element are
+unspecified.
+
+### `(make-list k [fill])`
+
+Returns a newly allocated list of k elements. If a second argument is
+given, then each element is initialized to fill. Otherwise the initial
+contents of each element is unspecified.
+
+### `(make-parameter init [converter])`
+
+Returns a newly allocated parameter object, which is a procedure that
+accepts zero arguments and returns the value associated with the
+parameter object. Initially, this value is the value of (converter
+init), or of init if the conversion procedure converter is not
+specified. The associated value can be temporarily changed using
+parameterize, which is described below.
+
+### `(make-string k [char])`
+
+The make-string procedure returns a newly allocated string of length
+k. If char is given, then all the characters of the string are
+initialized to char, otherwise the contents of the string are
+unspecified.
+
+### `(make-vector k [fill])`
+
+Returns a newly allocated vector of k elements. If a second argument
+is given, then each element is initialized to fill. Otherwise the
+initial contents of each element is unspecified.
+
+### `(map proc list1 ...)`
+
+It is an error if proc does not accept as many arguments as there are
+lists and return a single value.
+
+The map procedure applies proc element-wise to the elements of the
+lists and returns a list of the results, in order. If more than one
+list is given and not all lists have the same length, map terminates
+when the shortest list runs out. The lists can be circular, but it is
+an error if all of them are circular. It is an error for proc to
+mutate any of the lists. The dynamic order in which proc is applied to
+the elements of the lists is unspecified. If multiple returns occur
+from map, the values returned by earlier returns are not mutated.
+
+### `(max x1 ...)`
+
+Return the maximum of its arguments.
+
+### `(member obj list [compare])`
+
+Return the first sublist of list whose `car` is `obj`, where the
+sublists of list are the non-empty lists returned by (list-tail list
+k) for k less than the length of list. If `obj` does not occur in
+`list`, then `#f` (not the empty list) is returned.
+
+Uses `compare`, if given, and `equal?` otherwise.
+
+### `(memq obj list)`
+
+Return the first sublist of list whose `car` is `obj`, where the
+sublists of list are the non-empty lists returned by (list-tail list
+k) for k less than the length of list. If `obj` does not occur in
+`list`, then `#f` (not the empty list) is returned.
+
+Use `eq?` for comparison.
+
+### `(memv obj list)`
+
+Return the first sublist of list whose `car` is `obj`, where the
+sublists of list are the non-empty lists returned by (list-tail list
+k) for k less than the length of list. If `obj` does not occur in
+`list`, then `#f` (not the empty list) is returned.
+
+Uses `eqv?` for comparison.
+
+### `(min x1 ...)`
+
+Return the minimum of its arguments.
+
+### `(modulo n1 n2)`
+
+`modulo` is equivalent to `floor-remainder`. Provided for backward
+compatibility.
+
+### `(negative? x)`
+
+Return `#t` if `X` is negative. Otherwise `#f`.
+
+### `(newline [port])`
+
+Writes an end of line to output port.
+
+### `(not obj)`
+
+The not procedure returns #t if obj is false, and returns #f otherwise.
+
+### `(null? obj)`
+
+Returns #t if obj is the empty list, otherwise returns #f.
+
+### `(number->string z [radix])`
+
+It is an error if radix is not one of 2, 8, 10, or 16.
+
+### `(number? obj)`
+
+Return `#t` if `OBJ` is a number. Otherwise `#f`.
+
+### `(numerator q)`
+
 TODO
 
+### `(odd? number)`
 
-### `list->string`
-TODO
+Return `#t` if `NUMBER` is odd. Otherwise `#f`.
 
+### `(open-input-bytevector bytevector)`
 
-### `list->vector`
-TODO
+Takes a bytevector and returns a binary input port that delivers bytes
+from the bytevector.
 
+### `(open-input-string string)`
 
-### `list-copy`
-TODO
+Takes a string and returns a textual input port that delivers
+characters from the string. If the string is modified, the effect is
+unspecified.
 
+### `(open-output-bytevector)`
 
-### `list-ref`
-TODO
+Returns a binary output port that will accumulate bytes for retrieval
+by `get-output-bytevector`.
 
+### `(open-output-string)`
 
-### `list-set!`
-TODO
+Returns a textual output port that will accumulate characters for
+retrieval by `get-output-string`.
 
+### `(or test1 ...)` syntax
 
-### `list-tail`
-TODO
+The `test` expressions are evaluated from left to right, and the value
+of the first expression that evaluates to a true value is
+returned. Any remaining expressions are not evaluated. If all
+expressions evaluate to #f or if there are no expressions, then #f is
+returned.
 
+### `(output-port-open? port)`
 
-### `list?`
-TODO
+Returns #t if port is still open and capable of performing output, and
+#f otherwise.
 
+### `(output-port? obj)`
 
-### `make-bytevector`
-TODO
+Return #t if obj is an output port. Otherwise return #f.
 
+### `(pair? obj)`
 
-### `make-list`
-TODO
+The pair? predicate returns #t if obj is a pair, and otherwise returns
+#f.
 
+### `(parameterize ((param1 value1) ...) expr ...)`
 
-### `make-parameter`
-TODO
+A parameterize expression is used to change the values returned by
+specified parameter objects during the evaluation of the body.
 
+The ⟨param⟩ and ⟨value⟩ expressions are evaluated in an unspecified
+order. The ⟨body⟩ is evaluated in a dynamic environment in which calls
+to the parameters return the results of passing the corresponding
+values to the conversion procedure specified when the parameters were
+created. Then the previous values of the parameters are restored
+without passing them to the conversion procedure. The results of the
+last expression in the ⟨body⟩ are returned as the results of the
+entire parameterize expression.
 
-### `make-string`
-TODO
+Note: If the conversion procedure is not idempotent, the results of
+(parameterize ((x (x))) ...), which appears to bind the parameter x to
+its current value, might not be what the user expects.
 
+If an implementation supports multiple threads of execution, then
+parameterize must not change the associated values of any parameters
+in any thread other than the current thread and threads created inside
+⟨body⟩.
 
-### `make-vector`
-TODO
+Parameter objects can be used to specify configurable settings for a
+computation without the need to pass the value to every procedure in
+the call chain explicitly.
 
+### `(peek-char [port])`
 
-### `map`
-TODO
+Returns the next character available from the textual input port, but
+without updating the port to point to the following character. If no
+more characters are available, an end-of-file object is returned.
 
+Note: The value returned by a call to peek-char is the same as the
+value that would have been returned by a call to read-char with the
+same port. The only difference is that the very next call to read-char
+or peek-char on that port will return the value returned by the
+preceding call to peek-char. In particular, a call to peek-char on an
+interactive port will hang waiting for input whenever a call to
+read-char would have hung.
 
-### `max`
-TODO
+### `(peek-u8 [port])`
 
+Returns the next byte available from the binary input port, but
+without updating the port to point to the following byte. If no more
+bytes are available, an end-of-file object is returned.
 
-### `member`
-TODO
+### `(port? obj)`
 
+Return `#t` if `OBJ` is port. Otherwise `#f`.
 
-### `memq`
-TODO
+### `(positive? x)`
 
+Return `#t` if `X` is positive. Otherwise `#f`.
 
-### `memv`
-TODO
+### `(procedure? obj)`
 
-
-### `min`
-TODO
-
-
-### `modulo`
-TODO
-
-
-### `negative?`
-TODO
-
-
-### `newline`
-TODO
-
-
-### `not`
-TODO
-
-
-### `null?`
-TODO
-
-
-### `number->string`
-TODO
-
-
-### `number?`
-TODO
-
-
-### `numerator`
-TODO
-
-
-### `odd?`
-TODO
-
-
-### `open-input-bytevector`
-TODO
-
-
-### `open-input-string`
-TODO
-
-
-### `open-output-bytevector`
-TODO
-
-
-### `open-output-string`
-TODO
-
-
-### `or`
-TODO
-
-
-### `output-port-open?`
-TODO
-
-
-### `output-port?`
-TODO
-
-
-### `pair?`
-TODO
-
-
-### `parameterize`
-TODO
-
-
-### `peek-char`
-TODO
-
-
-### `peek-u8`
-TODO
-
-
-### `port?`
-TODO
-
-
-### `positive?`
-TODO
-
-
-### `procedure?`
-TODO
-
+Return `#t` if `OBJ` is a procedure. Otherwise `#f`.
 
 ### `quasiquote`
-TODO
 
+TODO
 
 ### `quote`
-TODO
 
+TODO
 
 ### `quotient`
+
 TODO
 
+### `(raise obj)`
 
-### `raise`
+Raises an exception by invoking the current exception handler on
+obj. The handler is called with the same dynamic environment as that
+of the call to raise, except that the current exception handler is the
+one that was in place when the handler being called was installed. If
+the handler returns, a secondary exception is raised in the same
+dynamic environment as the handler. The relationship between obj and
+the object raised by the secondary exception is unspecified.
+
+### `(raise-continuable obj)`
+
+Raises an exception by invoking the current exception handler on
+obj. The handler is called with the same dynamic environment as the
+call to raise-continuable, except that: (1) the current exception
+handler is the one that was in place when the handler being called was
+installed, and (2) if the handler being called returns, then it will
+again become the current exception handler. If the handler returns,
+the values it returns become the values returned by the call to
+raise-continuable.
+
+### `(rational? obj)`
+
+Return `#t` if `OBJ` is a rational number. Otherwise `#f`.
+
+### `(rationalize x y)`
+
+The rationalize procedure returns the simplest rational number
+differing from x by no more than y.
+
+### `(read-bytevector k [port])`
+
+Reads the next k bytes, or as many as are available before the end of
+file, from the binary input port into a newly allocated bytevector in
+left-to-right order and returns the bytevector. If no bytes are
+available before the end of file, an end-of-file object is returned.
+
+### `(read-bytevector! bytevector [port [start [end]]])`
+
+Reads the next end - start bytes, or as many as are available before
+the end of file, from the binary input port into bytevector in
+left-to-right order beginning at the start position. If end is not
+supplied, reads until the end of bytevector has been reached. If start
+is not supplied, reads beginning at position 0. Returns the number of
+bytes read. If no bytes are available, an end-of-file object is
+returned.
+
+### `(read-char [port])`
+
+Returns the next character available from the textual input port,
+updating the port to point to the following character. If no more
+characters are available, an end-of-file object is returned.
+
+### `(read-error? obj)`
+
+Error type predicates. Returns #t if obj is an object raised by the
+read procedure. Otherwise, it returns #f.
+
+### `(read-line [port])`
+
+Returns the next line of text available from the textual input port,
+updating the port to point to the following character. If an end of
+line is read, a string containing all of the text up to (but not
+including) the end of line is returned, and the port is updated to
+point just past the end of line. If an end of file is encountered
+before any end of line is read, but some characters have been read, a
+string containing those characters is returned. If an end of file is
+encountered before any characters are read, an end-of-file object is
+returned. For the purpose of this procedure, an end of line consists
+of either a linefeed character, a carriage return character, or a
+sequence of a carriage return character followed by a linefeed
+character. Implementations may also recognize other end of line
+characters or sequences.
+
+### `(read-string k [port])`
+
+Reads the next k characters, or as many as are available before the
+end of file, from the textual input port into a newly allocated string
+in left-to-right order and returns the string. If no characters are
+available before the end of file, an end-of-file object is returned.
+
+### `(read-u8 [port])`
+
+Returns the next byte available from the binary input port, updating
+the port to point to the following byte. If no more bytes are
+available, an end-of-file object is returned.
+
+### `(real? obj)`
+
+Return #t if `OBJ` is real number. Otherwise `#f`.
+
+### `(remainder n1 n2)`
+
 TODO
 
+### `(reverse list)`
 
-### `raise-continuable`
+Returns a newly allocated list consisting of the elements of list in
+reverse order.
+
+### `(round x)`
+
 TODO
 
+### `(set! variable expression)` syntax
 
-### `rational?`
-TODO
+Expression is evaluated, and the resulting value is stored in the
+location to which ⟨variable⟩ is bound. It is an error if ⟨variable⟩ is
+not bound either in some region enclosing the set! expression or else
+globally. The result of the set! expression is unspecified.
 
+### `(set-car! pair obj)`
 
-### `rationalize`
-TODO
+Stores `obj` in the car field of `pair`.
 
+### `(set-cdr! pair obj)`
 
-### `read-bytevector`
-TODO
+Stores obj in the cdr field of pair.
 
+### `(square z)`
 
-### `read-bytevector!`
-TODO
+Returns the square of z. This is equivalent to (* z z).
 
+### `(string char ...)`
 
-### `read-char`
-TODO
+Returns a newly allocated string composed of the arguments. It is
+analogous to list.
 
+### `(string->list straing [start [end]])`
 
-### `read-error?`
-TODO
+The string->list procedure returns a newly allocated list of the
+characters of string between start and end.
 
 
-### `read-line`
-TODO
+### `(string->number string [radix])`
 
+Returns a number of the maximally precise representation expressed by
+the given string. It is an error if radix is not 2, 8, 10, or 16.
 
-### `read-string`
-TODO
+If supplied, radix is a default radix that will be overridden if an
+explicit radix prefix is present in string (e.g. "#o177"). If radix is
+not supplied, then the default radix is 10. If string is not a
+syntactically valid notation for a number, or would result in a number
+that the implementation cannot represent, then string->number returns
+#f. An error is never signaled due to the content of string.
 
+### `(string->symbol string)`
 
-### `read-u8`
-TODO
+Returns the symbol whose name is string. This procedure can create
+symbols with names containing special characters that would require
+escaping when written, but does not interpret escapes in its input.
 
+### `(string->utf8 string [start [end]])`
 
-### `real?`
-TODO
+The string->utf8 procedure encodes the characters of a string between
+start and end and returns the corresponding bytevector.
 
+### `(string->vector string [start [end]])`
 
-### `remainder`
-TODO
+The string->vector procedure returns a newly created vector
+initialized to the elements of the string string between start and
+end.
 
+### `(string-append string ...)`
 
-### `reverse`
-TODO
+Returns a newly allocated string whose characters are the
+concatenation of the characters in the given strings.
 
+### `(string-copy string [start [end]])`
 
-### `round`
-TODO
+Returns a newly allocated copy of the part of the given string between
+start and end.
 
+### `(string-copy! to at from [start [end]])`
 
-### `set!`
-TODO
+It is an error if at is less than zero or greater than the length of
+to. It is also an error if (- (string-length to) at) is less than (-
+end start).
 
+Copies the characters of string from between start and end to string
+to, starting at at. The order in which characters are copied is
+unspecified, except that if the source and destination overlap,
+copying takes place as if the source is first copied into a temporary
+string and then into the destination. This can be achieved without
+allocating storage by making sure to copy in the correct direction in
+such circumstances.
 
-### `set-car!`
-TODO
+### `(string-fill! string fill [start [end]])`
 
+It is an error if fill is not a character.
 
-### `set-cdr!`
-TODO
+The string-fill! procedure stores fill in the elements of string
+between start and end.
 
+### `(string-for-each proc string1 ...)`
 
-### `square`
-TODO
+It is an error if proc does not accept as many arguments as there are
+strings.
 
+The arguments to string-for-each are like the arguments to string-map,
+but string-for-each calls proc for its side effects rather than for
+its values. Unlike string-map, string-for-each is guaranteed to call
+proc on the elements of the lists in order from the first element(s)
+to the last, and the value returned by string-for-each is
+unspecified. If more than one string is given and not all strings have
+the same length, string-for-each terminates when the shortest string
+runs out. It is an error for proc to mutate any of the strings.
 
-### `string`
-TODO
+### `(string-length string)`
 
+Returns the number of characters in the given string.
 
-### `string->list`
-TODO
+### `(string-map proc string1 ...)`
 
+It is an error if proc does not accept as many arguments as there are
+strings and return a single character.
 
-### `string->number`
-TODO
+The string-map procedure applies proc element-wise to the elements of
+the strings and returns a string of the results, in order. If more
+than one string is given and not all strings have the same length,
+string-map terminates when the shortest string runs out. The dynamic
+order in which proc is applied to the elements of the strings is
+unspecified. If multiple returns occur from string-map, the values
+returned by earlier returns are not mutated.
 
+### `(string-ref string k)`
 
-### `string->symbol`
-TODO
+It is an error if k is not a valid index of string.
 
+The string-ref procedure returns character k of string using
+zero-origin indexing. There is no requirement for this procedure to
+execute in constant time.
 
-### `string->utf8`
-TODO
+### `(string-set! string k char)`
 
+It is an error if k is not a valid index of string.
 
-### `string->vector`
-TODO
-
-
-### `string-append`
-TODO
-
-
-### `string-copy`
-TODO
-
-
-### `string-copy!`
-TODO
-
-
-### `string-fill!`
-TODO
-
-
-### `string-for-each`
-TODO
-
-
-### `string-length`
-TODO
-
-
-### `string-map`
-TODO
-
-
-### `string-ref`
-TODO
-
-
-### `string-set!`
-TODO
-
+The string-set! procedure stores char in element k of string. There is
+no requirement for this procedure to execute in constant time.
 
 ### `string<=?`
 TODO
@@ -798,9 +1174,10 @@ TODO
 TODO
 
 
-### `string=?`
-TODO
+### `(string=? string1 string2 ...)`
 
+Returns #t if all the strings are the same length and contain exactly
+the same characters in the same positions, otherwise returns #f.
 
 ### `string>=?`
 TODO
@@ -810,153 +1187,220 @@ TODO
 TODO
 
 
-### `string?`
-TODO
+### `(string? obj)`
 
+Return `#t` if `OBJ` is string. Otherwise `#f`.
 
-### `substring`
-TODO
+### `(substring string start end)`
 
+The substring procedure returns a newly allocated string formed from
+the characters of string beginning with index start and ending with
+index end. This is equivalent to calling string-copy with the same
+arguments, but is provided for backward compatibility and stylistic
+flexibility.
 
-### `symbol->string`
-TODO
+### `(symbol->string symbol)`
 
+Returns the name of symbol as a string, but without adding escapes. It
+is an error to apply mutation procedures like string-set! to strings
+returned by this procedure.
 
-### `symbol=?`
-TODO
+### `(symbol=? symbol1 symbol2 ...)`
 
+Returns #t if all the arguments are symbols and all have the same names in the sense of string=?.
 
-### `symbol?`
-TODO
+### `(symbol? obj)`
 
+Returns #t if obj is a symbol, otherwise returns #f.
 
 ### `syntax-error`
-TODO
 
+TODO
 
 ### `syntax-rules`
-TODO
 
+TODO
 
 ### `textual-port?`
+
 TODO
 
+### `(truncate x)`
 
-### `truncate`
 TODO
-
 
 ### `truncate-quotient`
-TODO
 
+TODO
 
 ### `truncate-remainder`
-TODO
 
+TODO
 
 ### `truncate/`
+
 TODO
 
+### `(u8-ready? [port])`
 
-### `u8-ready?`
-TODO
+Returns #t if a byte is ready on the binary input port and returns #f
+otherwise. If u8-ready? returns #t then the next read-u8 operation on
+the given port is guaranteed not to hang. If the port is at end of
+file then u8-ready? returns #t.
 
+### `(unless test expr ...)` syntax
 
-### `unless`
-TODO
-
+The test is evaluated, and if it evaluates to #f, the expressions are
+evaluated in order. The result of the unless expression is
+unspecified.
 
 ### `unquote`
-TODO
 
+TODO
 
 ### `unquote-splicing`
+
 TODO
 
+### `(utf8->string bytevector [start [end]])`
 
-### `utf8->string`
-TODO
+It is an error for bytevector to contain invalid UTF-8 byte sequences.
 
+The utf8->string procedure decodes the bytes of a bytevector between
+start and end and returns the corresponding string
 
-### `values`
-TODO
+### `(values obj ...)`
 
+Delivers all of its arguments to its continuation.
 
-### `vector`
-TODO
+### `(vector obj ...)`
 
+Returns a newly allocated vector whose elements contain the given
+arguments. It is analogous to list.
 
-### `vector->list`
-TODO
+### `(vector->list vector [start [end]])`
 
+The vector->list procedure returns a newly allocated list of the
+objects contained in the elements of vector between start and end. The
+list->vector procedure returns a newly created vector initialized to
+the elements of the list list.
 
-### `vector->string`
-TODO
+### `(vector->string vector [start [end]])`
 
+It is an error if any element of vector between start and end is not a
+character.
 
-### `vector-append`
-TODO
+The vector->string procedure returns a newly allocated string of the
+objects contained in the elements of vector between start and end. The
+string->vector procedure returns a newly created vector initialized to
+the elements of the string string between start and end.
 
+### `(vector-append vector ...)`
 
-### `vector-copy`
-TODO
+Returns a newly allocated vector whose elements are the concatenation
+of the elements of the given vectors.
 
+### `(vector-copy vector [start [end]])`
 
-### `vector-copy!`
-TODO
+Returns a newly allocated copy of the elements of the given vector
+between start and end. The elements of the new vector are the same (in
+the sense of eqv?) as the elements of the old.
 
+### `(vector-copy! to at from [start [end]])`
 
-### `vector-fill!`
-TODO
+It is an error if at is less than zero or greater than the length of
+to. It is also an error if (- (vector-length to) at) is less than (-
+end start).
 
+Copies the elements of vector from between start and end to vector to,
+starting at at. The order in which elements are copied is unspecified,
+except that if the source and destination overlap, copying takes place
+as if the source is first copied into a temporary vector and then into
+the destination. This can be achieved without allocating storage by
+making sure to copy in the correct direction in such circumstances.
 
-### `vector-for-each`
-TODO
+### `(vector-fill! vector fill [start [end]])`
 
+The vector-fill! procedure stores fill in the elements of vector
+between start and end.
 
-### `vector-length`
-TODO
+### `(vector-for-each proc vector1 ...)`
 
+It is an error if proc does not accept as many arguments as there are
+vectors.
 
-### `vector-map`
-TODO
+The arguments to vector-for-each are like the arguments to vector-map,
+but vector-for-each calls proc for its side effects rather than for
+its values. Unlike vector-map, vector-for-each is guaranteed to call
+proc on the elements of the vectors in order from the first element(s)
+to the last, and the value returned by vector-for-each is
+unspecified. If more than one vector is given and not all vectors have
+the same length, vector-for-each terminates when the shortest vector
+runs out. It is an error for proc to mutate any of the vectors.
 
+### `(vector-length vector)`
 
-### `vector-ref`
-TODO
+Returns the number of elements in vector as an exact integer.
 
+### `(vector-map proc vector1 ...)`
 
-### `vector-set!`
-TODO
+It is an error if proc does not accept as many arguments as there are
+vectors and return a single value.
 
+The vector-map procedure applies proc element-wise to the elements of
+the vectors and returns a vector of the results, in order. If more
+than one vector is given and not all vectors have the same length,
+vector-map terminates when the shortest vector runs out. The dynamic
+order in which proc is applied to the elements of the vectors is
+unspecified. If multiple returns occur from vector-map, the values
+returned by earlier returns are not mutated.
+
+### `(vector-ref vector k)`
+
+It is an error if k is not a valid index of vector.
+
+The vector-ref procedure returns the contents of element k of vector.
+
+### `(vector-set! vector k obj)`
+
+It is an error if k is not a valid index of vector.
+
+The vector-set! procedure stores obj in element k of vector.
 
 ### `vector?`
-TODO
 
+Returns #t if obj is a bytevector. Otherwise, #f is returned.
 
-### `when`
-TODO
+### `(when test expr ...)` syntax
 
+The test is evaluated, and if it evaluates to a true value, the
+expressions are evaluated in order. The result of the when expression
+is unspecified.
 
 ### `with-exception-handler`
+
 TODO
 
+### `(write-bytevector bytevector [port [start [end]]])`
 
-### `write-bytevector`
-TODO
+Writes the bytes of bytevector from start to end in left-to-right
+order to the binary output port.
 
+### `(write-char char [port])`
 
-### `write-char`
-TODO
+Writes the character char (not an external representation of the
+character) to the given textual output port and returns an unspecified
+value.
 
+### `(write-string string [port [start [end]]])`
 
-### `write-string`
-TODO
+Writes the characters of string from start to end in left-to-right
+order to the textual output port.
 
+### `(write-u8 byte [port])`
 
-### `write-u8`
-TODO
+Writes the byte to the given binary output port and returns an unspecified value.
 
+### `(zero? z)`
 
-### `zero?`
-TODO
+Return `#t` if z is zero. Otherwise `#f`.
