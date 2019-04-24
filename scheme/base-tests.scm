@@ -2,7 +2,7 @@
 (import (scheme base))
 
 
-(test-begin "scheme base")
+(test-begin "base")
 
 (test-equal "1" (+ 1 2 3 4) 10)
 

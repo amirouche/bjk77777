@@ -588,3 +588,15 @@
 <p>Writes the byte to the given binary output port and returns an unspecified value.</p>
 <h3 id="zero-z"><code>(zero? z)</code></h3>
 <p>Return <code>#t</code> if z is zero. Otherwise <code>#f</code>.</p>
+<h2 id="scheme-case-lambda"><code>(scheme case-lambda)</code></h2>
+<h3 id="case-lambda-clause1-clause2-...-syntax"><code>(case-lambda clause1 clause2 ...)</code> syntax</h3>
+<p>Each clause is of the form <code>(formals body)</code>, where <code>formals</code> and <code>body</code> have the same syntax as in a lambda expression.</p>
+<p>A case-lambda expression evaluates to a procedure that accepts a variable number of arguments and is lexically scoped in the same manner as a procedure resulting from a lambda expression. When the procedure is called, the first clause for which the arguments agree with <code>formals</code> is selected, where agreement is specified as for the <code>formals</code> of a lambda expression. The variables of <code>formals</code> are bound to fresh locations, the values of the arguments are stored in those locations, the <code>body</code> is evaluated in the extended environment, and the results of <code>body</code> are returned as the results of the procedure call.</p>
+<p>It is an error for the arguments not to agree with the <code>formals</code> of any clause`.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode scheme"><code class="sourceCode scheme"><a class="sourceLine" id="cb1-1" data-line-number="1">(<span class="kw">define</span><span class="fu"> add1</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">  (case-lambda</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">    ((a) (add1 a <span class="dv">0</span>))</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">    ((a b) (<span class="kw">+</span> <span class="dv">1</span> a b))))</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">(add1 <span class="dv">1</span>) <span class="co">;; =&gt; 2</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">(add1 <span class="dv">1</span> <span class="dv">2</span>) <span class="co">;; =&gt; 4</span></a></code></pre></div>
