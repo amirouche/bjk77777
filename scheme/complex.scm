@@ -1,9 +1,8 @@
 ;; -*- mode: scheme; coding: utf-8 -*-
 ;; SPDX-License-Identifier: CC0-1.0
 #!r6rs
+(define-module (scheme complex))
 
-(library (scheme complex)
-  (export
-    angle imag-part magnitude make-polar make-rectangular real-part)
-  (import
-    (rnrs)))
+(import (rnrs))
+
+(re-export angle imag-part magnitude make-polar make-rectangular real-part)
