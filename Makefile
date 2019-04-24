@@ -1,18 +1,19 @@
 help: ## This help.
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort
 
-DOCUMENTATION_FILES =		\
-	README.md		\
-	scheme/base.md		\
-	scheme/case-lambda.md	\
-	scheme/char.md		\
-	scheme/complex.md	\
-	scheme/cxr.md		\
-	scheme/eval.md		\
-	scheme/file.md		\
-	scheme/inexact.md	\
-	scheme/lazy.md		\
-	scheme/load.md		\
+DOCUMENTATION_FILES =			\
+	README.md			\
+	scheme/base.md			\
+	scheme/case-lambda.md		\
+	scheme/char.md			\
+	scheme/complex.md		\
+	scheme/cxr.md			\
+	scheme/eval.md			\
+	scheme/file.md			\
+	scheme/inexact.md		\
+	scheme/lazy.md			\
+	scheme/load.md			\
+	scheme/process-context.md	\
 
 
 doc: ## Build the documentation with pandoc in html and pdf format.
