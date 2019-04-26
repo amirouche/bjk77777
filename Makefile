@@ -56,7 +56,7 @@ smoke:
 	guile -L $(PWD) smoke-test.scm
 
 check: smoke ## Run tests
-	find scheme/ -name "*-tests.scm" -print0 | xargs -0L1 guile -L $(PWD)
+	find scheme/ -name "*-tests.scm" -print0 | xargs -0L1 guile -x .sls -L $(PWD)
 
 todo: ## Things that should be done.
 	@grep -nR --color=always --before-context=2 --after-context=2 TODO src/
@@ -65,4 +65,4 @@ xxx: ## Things that require attention.
 	@grep -nR --color=always --before-context=2 --after-context=2 XXX src/
 
 repl: ## Start a guile REPL
-	guile -L $(PWD)
+	guile -x .sls -L $(PWD)
