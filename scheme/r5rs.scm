@@ -38,7 +38,7 @@
  eval even? exact->inexact exact? exp expt floor for-each
  force gcd if imag-part inexact->exact inexact? input-port?
  integer->char integer? interaction-environment lambda lcm
- length let let* let-syntax letrec letrec-syntax list
+ length let let* letrec letrec-syntax list
  list->string list->vector list-ref list-tail list? load log
  magnitude make-polar make-rectangular make-string
  make-vector map max member memq memv min modulo negative?
@@ -53,7 +53,10 @@
  string-ci>=? string-ci>? string-copy string-fill!
  string-length string-ref string-set! string<=? string<?
  string=? string>=? string>? string? substring symbol->string
- symbol? syntax-rules tan truncate values vector vector->list
+ symbol? tan truncate values vector vector->list
  vector-fill! vector-length vector-ref vector-set! vector?
  with-input-from-file with-output-to-file write write-char
  zero?)
+
+(export! let-syntax)
+(export! syntax-rules)
