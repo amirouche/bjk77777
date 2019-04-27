@@ -52,7 +52,7 @@ added to the new hash table with key as its key and value as its
 value. If the same key (in the sense of the equality predicate) is
 specified more than once, it is an error.
 
-##### `(hash-table-unfold stop? mapper successor seed comparator arg ...)`
+##### `(hash-table-unfold stop? mapper successor seed comparator args ...)`
 
 Create a new hash table as if by `make-hash-table` using `comparator`
 and the `args`. If the result of applying the predicate `stop?` to
@@ -196,12 +196,12 @@ unspecified order.
 
 ##### `(hash-table-map proc comparator hash-table)`
 
-Returns a newly allocated hash table as if by (make-hash-table
-comparator). Calls proc for every association in hash-table with the
-value of the association. The key of the association and the result of
-invoking proc are entered into the new hash table. Note that this is
-not the result of lifting mapping over the domain of hash tables, but
-it is considered more useful.
+Returns a newly allocated hash table as if by `(make-hash-table
+comparator)`. Calls `PROC` for every association in `hash-table` with
+the value of the association. The key of the association and the
+result of invoking `proc` are entered into the new hash table. Note
+that this is not the result of lifting mapping over the domain of hash
+tables, but it is considered more useful.
 
 If comparator recognizes multiple keys in the hash-table as
 equivalent, any one of such associations is taken.
