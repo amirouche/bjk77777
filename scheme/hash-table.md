@@ -44,7 +44,6 @@ applications. A hash table is a data structure that:
 Returns a newly allocated hash table using `(scheme comparator)`
 object `COMPARATOR`. For the time being, `ARGS` is ignored.
 
-
 ##### `(hash-table comparator  [key value] ...)`
 
 Returns a newly allocated hash table using `(scheme comparator)`
