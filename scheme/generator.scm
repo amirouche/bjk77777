@@ -122,19 +122,17 @@
      result)))
 
 
-
 ;; make-coroutine-generator
-(define (make-coroutine-generator thunk)
-  (define tag (make-prompt-tag))
-  (define (run)
-    (thunk (lambda (val) (abort-to-prompt tag val)))
-    (eof-object))
-  (lambda ()
-    (call-with-prompt tag
-                      run
-                      (lambda (k ret)
-                        (set! run k)
-                        ret))))
+(define (make-coroutine-generator proc)
+  (define return #f)
+  (define resume #f)
+  (define yield (lambda (v) (call/cc (lambda (r) (set! resume r) (return v)))))
+  (lambda () (call/cc (lambda (cc) (set! return cc)
+                        (if resume
+                          (resume (if #f #f))  ; void? or yield again?
+                          (begin (proc yield)
+                                 (set! resume (lambda (v) (return (eof-object))))
+                                 (return (eof-object))))))))
 
 
 ;; list->generator
