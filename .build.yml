@@ -6,6 +6,7 @@ packages:
   - pkg-config
   - libtool
   - guile-2.2
+  - guile-2.2-dev
 sources:
   - https://git.sr.ht/~amz3/guile-r7rs
 tasks:
