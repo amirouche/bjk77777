@@ -3,6 +3,7 @@ packages:
   - autotools-dev
   - autoconf
   - automake
+  - pkg-config
   - libtool
   - guile-2.2
 sources:
