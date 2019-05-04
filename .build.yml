@@ -8,4 +8,7 @@ packages:
 sources:
   - https://git.sr.ht/~amz3/guile-r7rs
 tasks:
+  - bootstrap: cd guile-r7rs && ./bootstrap
+  - configure: cd guile-r7rs && ./configure
+  - make: cd guile-r7rs && make
   - check: cd guile-r7rs && make check
