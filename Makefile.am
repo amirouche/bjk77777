@@ -35,21 +35,17 @@ SOURCES = 				\
 	scheme/assume.scm		\
 	scheme/base.scm			\
 	scheme/bitwise.scm		\
-	scheme/bitwise/other.scm	\
 	scheme/box.scm			\
 	scheme/bytevector.scm		\
 	scheme/case-lambda.scm		\
 	scheme/char.scm			\
 	scheme/charset.scm		\
 	scheme/comparator.scm		\
-	scheme/comparator/body1.scm	\
-	scheme/comparator/body2.scm	\
 	scheme/complex.scm		\
 	scheme/cxr.scm			\
 	scheme/eval.scm			\
 	scheme/file.scm			\
 	scheme/generator.scm		\
-	scheme/generator/body.scm	\
 	scheme/hash-table.scm		\
 	scheme/inexact.scm		\
 	scheme/lazy.scm			\
@@ -57,15 +53,11 @@ SOURCES = 				\
 	scheme/load.scm			\
 	scheme/mapping.scm		\
 	scheme/mapping/hash.scm		\
-	scheme/mapping/mapping-body.scm	\
-	scheme/mapping/rbtree.scm	\
 	scheme/process-context.scm	\
 	scheme/r5rs.scm			\
 	scheme/read.scm			\
 	scheme/repl.scm			\
 	scheme/set.scm			\
-	scheme/set/body.scm		\
-	scheme/set/comparators-shim.scm	\
 	scheme/sort.scm			\
 	scheme/stream.scm		\
 	scheme/time.scm			\
