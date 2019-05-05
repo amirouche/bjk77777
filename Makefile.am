@@ -61,7 +61,8 @@ SOURCES = 				\
 	scheme/sort.scm			\
 	scheme/stream.scm		\
 	scheme/time.scm			\
-	scheme/write.scm
+	scheme/write.scm		\
+	scheme/guile/cffi.scm
 
 
 EXTRA_DIST =            \
