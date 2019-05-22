@@ -350,19 +350,21 @@
   (gfilter (lambda (v) (not (pred v))) gen))
 
 
+(define (%gtake gen k padding)
+  (lambda ()
+    (if (> k 0)
+        (let ((out (gen)))
+          (set! k (- k 1))
+          (if (eof-object? out)
+              padding
+              out))
+        (eof-object))))
+
 
 ;; gtake
 (define gtake
   (case-lambda ((gen k) (gtake gen k (eof-object)))
-               ((gen k padding)
-                (make-coroutine-generator (lambda (yield)
-                                            (if (> k 0)
-                                              (let loop ((i 0) (v (gen)))
-                                               (begin (if (eof-object? v) (yield padding) (yield v))
-                                                      (if (< (+ 1 i) k)
-                                                        (loop (+ 1 i) (gen))
-                                                        (eof-object))))
-                                              (eof-object)))))))
+               ((gen k padding) (%gtake gen k padding))))
 
 
 
