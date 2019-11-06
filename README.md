@@ -2,7 +2,7 @@
 
 [![builds.sr.ht status](https://builds.sr.ht/~amz3/guile-arew.svg)](https://builds.sr.ht/~amz3/guile-arew?)
 
-![live smart, die old](https://git.sr.ht/%7Eschemers/guile-arew/blob/master/liubov-ilchuk-8V6LbC9ZCwg-unsplash.jpg)
+![live smart, die old](https://git.sr.ht/%7Eamz3/guile-arew/blob/master/liubov-ilchuk-8V6LbC9ZCwg-unsplash.jpg)
 
 ## Introduction
 
