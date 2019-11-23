@@ -72,7 +72,6 @@
         list->bits
         bits
 
-
         bitwise-nand
         bitwise-nor
         bitwise-andc1

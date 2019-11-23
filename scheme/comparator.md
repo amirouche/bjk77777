@@ -1,3 +1,4 @@
+
 ## `(scheme comparator)`
 
 This library is based on [SRFI-114](https://srfi.schemers.org/srfi-114/).

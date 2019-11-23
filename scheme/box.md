@@ -1,3 +1,4 @@
+
 ## `(scheme box)`
 
 This library is based on [SRFI-111](https://srfi.schemers.org/srfi-111/).
@@ -24,4 +25,4 @@ Accessor. Returns the current value of box.
 
 #### `(set-box! box value)`
 
-Mutator. Changes box to hold value.
+Mutator. Changes `BOX` to hold `VALUE`.

@@ -1,4 +1,5 @@
-## `(arew scheme bytevector)`
+
+## `(scheme bytevector)`
 
 This is based on [R6RS
 bytevectors](http://www.r6rs.org/final/html/r6rs-lib/r6rs-lib-Z-H-3.html#node_chap_2)
